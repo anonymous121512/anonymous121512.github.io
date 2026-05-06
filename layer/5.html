@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layer 5 — Weightpedia</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+
+    <style>
+      .wp-banner {
+        display: flex; align-items: center; justify-content: center;
+        gap: 0.9rem; flex-wrap: wrap;
+        padding: 0.5rem 1.5rem;
+        background: linear-gradient(90deg, rgba(233,179,59,0.10), rgba(122,162,247,0.10));
+        border-bottom: 1px solid var(--border, #30363d);
+        font-size: 0.8rem; color: var(--text2, #8b949e);
+      }
+      .wp-banner-tag {
+        display: inline-block; padding: 2px 8px;
+        font-size: 0.68rem; font-weight: 600;
+        letter-spacing: 0.08em; text-transform: uppercase;
+        border-radius: 10px;
+        background: rgba(233,179,59,0.18);
+        color: #e9b33b;
+        border: 1px solid rgba(233,179,59,0.35);
+      }
+      .wp-banner-authors { color: var(--text, #e6edf3); }
+      .wp-banner-authors .wp-wip { color: #e9b33b; font-size: 0.7rem; margin-left: 0.25rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/index.html" class="nav-brand">Weightpedia</a>
+        <div class="nav-links">
+            <a href="/index.html">Index</a>
+        </div>
+    </nav>
+    <div class="wp-banner">
+        <span class="wp-banner-tag">Anonymous review</span>
+        <span>Submitted under anonymous review. Full version with case studies will be released alongside the paper.</span>
+    </div>
+
+    <main class="container">
+        
+<div x-data="layerWeights()" x-init="init()">
+    <div class="detail-nav">
+        
+        <a href="/layer/4.html" class="btn btn-secondary">&larr; Layer 4</a>
+        
+        <a href="/index.html" class="btn btn-secondary">All Layers</a>
+        
+        <a href="/layer/6.html" class="btn btn-secondary">Layer 6 &rarr;</a>
+        
+    </div>
+    <div class="detail-header">
+        <h1>Layer 5</h1>
+        <div class="detail-stats">
+            <div class="detail-stat">
+                <span class="detail-stat-label">Profiled</span>
+                <span class="detail-stat-value">0</span>
+            </div>
+            <div class="detail-stat">
+                <span class="detail-stat-label">With effect</span>
+                <span class="detail-stat-value">12,076</span>
+            </div>
+            <div class="detail-stat">
+                <span class="detail-stat-label">Scanned</span>
+                <span class="detail-stat-value">43,951</span>
+            </div>
+            <div class="detail-stat">
+                <span class="detail-stat-label">% with effect</span>
+                <span class="detail-stat-value">27.5%</span>
+            </div>
+        </div>
+    </div>
+    <div class="filter-bar" style="display:flex; gap:1rem; margin:1rem 0; align-items:center; flex-wrap:wrap;">
+        <select x-model="filterComponent" @change="applyFilters()" style="padding:0.3rem 0.6rem; background:#1e1f2e; color:#ccc; border:1px solid #333; border-radius:4px;">
+            <option value="">All components</option>
+            
+        </select>
+        <input type="text" placeholder="Search param name..." x-model="searchQ" @input="applyFilters()"
+               style="padding:0.3rem 0.6rem; background:#1e1f2e; color:#ccc; border:1px solid #333; border-radius:4px; width:200px;">
+        <span class="text-muted" x-text="filtered.length + ' / ' + allWeights.length + ' weights'"></span>
+    </div>
+    <table class="weight-table">
+        <thead>
+            <tr>
+                <th @click="setSort('rank')" style="cursor:pointer">Rank</th>
+                <th @click="setSort('param_name')" style="cursor:pointer">Weight</th>
+                <th>Indices</th>
+                <th @click="setSort('component')" style="cursor:pointer">Component</th>
+                <th @click="setSort('max_kl')" style="cursor:pointer">Max KL</th>
+            </tr>
+        </thead>
+        <tbody>
+            <template x-for="w in paginated" :key="w.rank">
+                <tr @click="window.location.href='/weight/' + w.rank + '.html'" style="cursor:pointer">
+                    <td x-text="'#' + w.rank"></td>
+                    <td><code x-text="w.param_name"></code></td>
+                    <td x-text="JSON.stringify(w.indices)"></td>
+                    <td x-text="w.component"></td>
+                    <td class="kl-value" x-text="w.max_kl.toFixed(4)"></td>
+                </tr>
+            </template>
+        </tbody>
+    </table>
+    <div style="display:flex; justify-content:center; gap:1rem; margin:1rem 0; align-items:center;">
+        <button class="btn btn-secondary btn-sm" @click="page = Math.max(0, page-1)" :disabled="page === 0">&larr; Prev</button>
+        <span class="text-muted" x-text="'Page ' + (page+1) + ' / ' + totalPages"></span>
+        <button class="btn btn-secondary btn-sm" @click="page = Math.min(totalPages-1, page+1)" :disabled="page >= totalPages-1">Next &rarr;</button>
+    </div>
+</div>
+
+<script>
+const LAYER_WEIGHTS = [];
+function layerWeights() {
+    return {
+        allWeights: LAYER_WEIGHTS,
+        filtered: [],
+        paginated: [],
+        filterComponent: '',
+        searchQ: '',
+        sortField: 'max_kl',
+        sortOrder: 'desc',
+        page: 0,
+        perPage: 50,
+        totalPages: 1,
+        init() { this.applyFilters(); },
+        applyFilters() {
+            let results = [...this.allWeights];
+            if (this.filterComponent) results = results.filter(w => w.component === this.filterComponent);
+            if (this.searchQ) {
+                const q = this.searchQ.toLowerCase();
+                results = results.filter(w => w.param_name.toLowerCase().includes(q));
+            }
+            const mult = this.sortOrder === 'asc' ? 1 : -1;
+            const f = this.sortField;
+            results.sort((a,b) => {
+                const va = a[f] ?? '', vb = b[f] ?? '';
+                if (typeof va === 'number' && typeof vb === 'number') return (va - vb) * mult;
+                return String(va).localeCompare(String(vb)) * mult;
+            });
+            this.filtered = results;
+            this.totalPages = Math.max(1, Math.ceil(results.length / this.perPage));
+            this.page = Math.min(this.page, this.totalPages - 1);
+            this.paginated = results.slice(this.page * this.perPage, (this.page+1) * this.perPage);
+        },
+        setSort(field) {
+            if (this.sortField === field) this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+            else { this.sortField = field; this.sortOrder = field === 'max_kl' ? 'desc' : 'asc'; }
+            this.applyFilters();
+        },
+    };
+}
+</script>
+
+    </main>
+    <script src="/static/app.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weightpedia — Layer Overview</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+
+    <style>
+      .wp-banner {
+        display: flex; align-items: center; justify-content: center;
+        gap: 0.9rem; flex-wrap: wrap;
+        padding: 0.5rem 1.5rem;
+        background: linear-gradient(90deg, rgba(233,179,59,0.10), rgba(122,162,247,0.10));
+        border-bottom: 1px solid var(--border, #30363d);
+        font-size: 0.8rem; color: var(--text2, #8b949e);
+      }
+      .wp-banner-tag {
+        display: inline-block; padding: 2px 8px;
+        font-size: 0.68rem; font-weight: 600;
+        letter-spacing: 0.08em; text-transform: uppercase;
+        border-radius: 10px;
+        background: rgba(233,179,59,0.18);
+        color: #e9b33b;
+        border: 1px solid rgba(233,179,59,0.35);
+      }
+      .wp-banner-authors { color: var(--text, #e6edf3); }
+      .wp-banner-authors .wp-wip { color: #e9b33b; font-size: 0.7rem; margin-left: 0.25rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/index.html" class="nav-brand">Weightpedia</a>
+        <div class="nav-links">
+            <a href="/index.html">Index</a>
+        </div>
+    </nav>
+    <div class="wp-banner">
+        <span class="wp-banner-tag">Anonymous review</span>
+        <span>Submitted under anonymous review. Full version with case studies will be released alongside the paper.</span>
+    </div>
+
+    <main class="container">
+        
+<div class="layer-overview">
+    <div class="overview-header">
+        <h1>Weightpedia</h1>
+        <p class="overview-subtitle">Weight-level interpretability for sparse transformers</p>
+        <div class="overview-stats">
+            <div class="stat">
+                <span class="stat-value">191701</span>
+                <span class="stat-label">Weights with effect</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value">12</span>
+                <span class="stat-label">Layers</span>
+            </div>
+        </div>
+        <p style="margin-top:0.8rem">
+            <a href="/weights.html" class="btn btn-secondary">View all weights (flat list)</a>
+            <a href="#" class="btn" onclick="window.location.href='/weight/'+Math.ceil(Math.random()*124)+'.html';return false;">Surprise me with a random weight</a>
+        </p>
+    </div>
+    <div class="layer-grid">
+        
+        <a href="/layer/0.html" class="layer-card">
+            <div class="layer-card-header">
+                <span class="layer-num">Layer 0</span>
+            </div>
+            <div class="layer-card-body">
+                <div class="layer-stat-row">
+                    <span class="layer-stat-label">Nonzero weights</span>
+                    <span class="layer-stat-val">44,777</span>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/layer/1.html" class="layer-card">
+            <div class="layer-card-header">
+                <span class="layer-num">Layer 1</span>
+            </div>
+            <div class="layer-card-body">
+                <div class="layer-stat-row">
+                    <span class="layer-stat-label">Nonzero weights</span>
+                    <span class="layer-stat-val">44,893</span>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/layer/2.html" class="layer-card">
+            <div class="layer-card-header">
+                <span class="layer-num">Layer 2</span>
+            </div>
+            <div class="layer-card-body">
+                <div class="layer-stat-row">
+                    <span class="layer-stat-label">Nonzero weights</span>
+                    <span class="layer-stat-val">43,860</span>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/layer/3.html" class="layer-card">
+            <div class="layer-card-header">
+                <span class="layer-num">Layer 3</span>
+            </div>
+            <div class="layer-card-body">
+                <div class="layer-stat-row">
+                    <span class="layer-stat-label">Nonzero weights</span>
+                    <span class="layer-stat-val">44,884</span>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/layer/4.html" class="layer-card">
+            <div class="layer-card-header">
+                <span class="layer-num">Layer 4</span>
+            </div>
+            <div class="layer-card-body">
+                <div class="layer-stat-row">
+                    <span class="layer-stat-label">Nonzero weights</span>
+                    <span class="layer-stat-val">44,921</span>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/layer/5.html" class="layer-card">
+            <div class="layer-card-header">
+                <span class="layer-num">Layer 5</span>
+            </div>
+            <div class="layer-card-body">
+                <div class="layer-stat-row">
+                    <span class="layer-stat-label">Nonzero weights</span>
+                    <span class="layer-stat-val">43,951</span>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/layer/6.html" class="layer-card">
+            <div class="layer-card-header">
+                <span class="layer-num">Layer 6</span>
+            </div>
+            <div class="layer-card-body">
+                <div class="layer-stat-row">
+                    <span class="layer-stat-label">Nonzero weights</span>
+                    <span class="layer-stat-val">44,973</span>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/layer/7.html" class="layer-card">
+            <div class="layer-card-header">
+                <span class="layer-num">Layer 7</span>
+            </div>
+            <div class="layer-card-body">
+                <div class="layer-stat-row">
+                    <span class="layer-stat-label">Nonzero weights</span>
+                    <span class="layer-stat-val">45,008</span>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/layer/8.html" class="layer-card">
+            <div class="layer-card-header">
+                <span class="layer-num">Layer 8</span>
+            </div>
+            <div class="layer-card-body">
+                <div class="layer-stat-row">
+                    <span class="layer-stat-label">Nonzero weights</span>
+                    <span class="layer-stat-val">44,006</span>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/layer/9.html" class="layer-card">
+            <div class="layer-card-header">
+                <span class="layer-num">Layer 9</span>
+            </div>
+            <div class="layer-card-body">
+                <div class="layer-stat-row">
+                    <span class="layer-stat-label">Nonzero weights</span>
+                    <span class="layer-stat-val">45,019</span>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/layer/10.html" class="layer-card">
+            <div class="layer-card-header">
+                <span class="layer-num">Layer 10</span>
+            </div>
+            <div class="layer-card-body">
+                <div class="layer-stat-row">
+                    <span class="layer-stat-label">Nonzero weights</span>
+                    <span class="layer-stat-val">44,051</span>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/layer/11.html" class="layer-card">
+            <div class="layer-card-header">
+                <span class="layer-num">Layer 11</span>
+            </div>
+            <div class="layer-card-body">
+                <div class="layer-stat-row">
+                    <span class="layer-stat-label">Nonzero weights</span>
+                    <span class="layer-stat-val">45,065</span>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+    
+    <div class="neuron-section" style="margin-top:2rem;">
+        <h2 style="color:#e0e0e0; margin-bottom:1rem;">Neuron Case Studies</h2>
+        <div class="layer-grid">
+            
+            <a href="/neuron/1863.html" class="layer-card" style="border-left:3px solid #4CAF50;">
+                <div class="layer-card-header">
+                    <span class="layer-num">Neuron 1863</span>
+                </div>
+                <div class="layer-card-body">
+                    <div class="layer-stat-row">
+                        <span class="layer-stat-label">Universal number detector (decomposition case study)</span>
+                    </div>
+                    <div class="layer-stat-row">
+                        <span class="layer-stat-label">Connected weights</span>
+                        <span class="layer-stat-val">21</span>
+                    </div>
+                    <div class="layer-stat-row">
+                        <span class="layer-stat-label">Layer</span>
+                        <span class="layer-stat-val">0</span>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="/neuron/863.html" class="layer-card" style="border-left:3px solid #4CAF50;">
+                <div class="layer-card-header">
+                    <span class="layer-num">Neuron 863</span>
+                </div>
+                <div class="layer-card-body">
+                    <div class="layer-stat-row">
+                        <span class="layer-stat-label">Double-quote detector — Figure 4 string-closing circuit (Gao et al.)</span>
+                    </div>
+                    <div class="layer-stat-row">
+                        <span class="layer-stat-label">Connected weights</span>
+                        <span class="layer-stat-val">8</span>
+                    </div>
+                    <div class="layer-stat-row">
+                        <span class="layer-stat-label">Layer</span>
+                        <span class="layer-stat-val">0</span>
+                    </div>
+                </div>
+            </a>
+            
+        </div>
+    </div>
+    
+</div>
+
+    </main>
+    <script src="/static/app.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neuron 1863 — Weightpedia</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+
+    <style>
+      .wp-banner {
+        display: flex; align-items: center; justify-content: center;
+        gap: 0.9rem; flex-wrap: wrap;
+        padding: 0.5rem 1.5rem;
+        background: linear-gradient(90deg, rgba(233,179,59,0.10), rgba(122,162,247,0.10));
+        border-bottom: 1px solid var(--border, #30363d);
+        font-size: 0.8rem; color: var(--text2, #8b949e);
+      }
+      .wp-banner-tag {
+        display: inline-block; padding: 2px 8px;
+        font-size: 0.68rem; font-weight: 600;
+        letter-spacing: 0.08em; text-transform: uppercase;
+        border-radius: 10px;
+        background: rgba(233,179,59,0.18);
+        color: #e9b33b;
+        border: 1px solid rgba(233,179,59,0.35);
+      }
+      .wp-banner-authors { color: var(--text, #e6edf3); }
+      .wp-banner-authors .wp-wip { color: #e9b33b; font-size: 0.7rem; margin-left: 0.25rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/index.html" class="nav-brand">Weightpedia</a>
+        <div class="nav-links">
+            <a href="/index.html">Index</a>
+        </div>
+    </nav>
+    <div class="wp-banner">
+        <span class="wp-banner-tag">Anonymous review</span>
+        <span>Submitted under anonymous review. Full version with case studies will be released alongside the paper.</span>
+    </div>
+
+    <main class="container">
+        
+<div class="detail-header">
+    <div class="detail-nav">
+        <a href="/index.html" class="btn btn-secondary">&larr; Back to Index</a>
+    </div>
+    <h1>Neuron 1863 <span style="color:#888; font-size:0.6em;">(Layer 0, mlp)</span></h1>
+    <p style="color:#aaa; font-size:1.1em;">Universal number detector (decomposition case study)</p>
+    <div class="detail-stats">
+        <div class="detail-stat">
+            <span class="detail-stat-label">Total weights</span>
+            <span class="detail-stat-value">21</span>
+        </div>
+        <div class="detail-stat">
+            <span class="detail-stat-label">Inputs (W_in)</span>
+            <span class="detail-stat-value">10</span>
+        </div>
+        <div class="detail-stat">
+            <span class="detail-stat-label">Outputs (W_out)</span>
+            <span class="detail-stat-value">11</span>
+        </div>
+    </div>
+</div>
+
+<h2 style="color:#e0e0e0; margin-top:2rem;">Input Weights (residual dim &rarr; neuron 1863)</h2>
+<p style="color:#888;">Each input weight carries a different signal into the neuron. Click any row to see the full profile.</p>
+<table class="weight-table">
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Weight</th>
+            <th>Indices</th>
+            <th>Max KL</th>
+            <th>Mean KL</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        <tr onclick="window.location.href='/weight/16.html'" style="cursor:pointer">
+            <td>#16</td>
+            <td><code>blocks.0.mlp.W_in</code></td>
+            <td>[464, 1863]</td>
+            <td class="kl-value">26.7662</td>
+            <td>0.009274</td>
+        </tr>
+        
+        <tr onclick="window.location.href='/weight/23.html'" style="cursor:pointer">
+            <td>#23</td>
+            <td><code>blocks.0.mlp.W_in</code></td>
+            <td>[71, 1863]</td>
+            <td class="kl-value">22.7326</td>
+            <td>0.004690</td>
+        </tr>
+        
+        <tr onclick="window.location.href='/weight/30.html'" style="cursor:pointer">
+            <td>#30</td>
+            <td><code>blocks.0.mlp.W_in</code></td>
+            <td>[395, 1863]</td>
+            <td class="kl-value">17.1137</td>
+            <td>0.002023</td>
+        </tr>
+        
+        <tr onclick="window.location.href='/weight/34.html'" style="cursor:pointer">
+            <td>#34</td>
+            <td><code>blocks.0.mlp.W_in</code></td>
+            <td>[799, 1863]</td>
+            <td class="kl-value">16.0585</td>
+            <td>0.002183</td>
+        </tr>
+        
+        <tr onclick="window.location.href='/weight/40.html'" style="cursor:pointer">
+            <td>#40</td>
+            <td><code>blocks.0.mlp.W_in</code></td>
+            <td>[578, 1863]</td>
+            <td class="kl-value">13.6505</td>
+            <td>0.005442</td>
+        </tr>
+        
+        <tr onclick="window.location.href='/weight/103.html'" style="cursor:pointer">
+            <td>#103</td>
+            <td><code>blocks.0.mlp.W_in</code></td>
+            <td>[131, 1863]</td>
+            <td class="kl-value">8.0407</td>
+            <td>0.030843</td>
+        </tr>
+        
+        <tr onclick="window.location.href='/weight/163.html'" style="cursor:pointer">
+            <td>#163</td>
+            <td><code>blocks.0.mlp.W_in</code></td>
+            <td>[678, 1863]</td>
+            <td class="kl-value">5.9731</td>
+            <td>0.004917</td>
+        </tr>
+        
+        <tr onclick="window.location.href='/weight/1032.html'" style="cursor:pointer">
+            <td>#1032</td>
+            <td><code>blocks.0.mlp.W_in</code></td>
+            <td>[87, 1863]</td>
+            <td class="kl-value">1.9184</td>
+            <td>0.000055</td>
+        </tr>
+        
+        <tr onclick="window.location.href='/weight/2101.html'" style="cursor:pointer">
+            <td>#2101</td>
+            <td><code>blocks.0.mlp.W_in</code></td>
+            <td>[558, 1863]</td>
+            <td class="kl-value">1.0570</td>
+            <td>0.000906</td>
+        </tr>
+        
+        <tr onclick="window.location.href='/weight/3751.html'" style="cursor:pointer">
+            <td>#3751</td>
+            <td><code>blocks.0.mlp.W_in</code></td>
+            <td>[299, 1863]</td>
+            <td class="kl-value">0.0121</td>
+            <td>0.000036</td>
+        </tr>
+        
+    </tbody>
+</table>
+
+<h2 style="color:#e0e0e0; margin-top:2rem;">Output Weights (neuron 1863 &rarr; residual dim)</h2>
+<p style="color:#888;">Each output weight routes the neuron's signal to a different downstream channel. Click any row to see the full profile.</p>
+<table class="weight-table">
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Weight</th>
+            <th>Indices</th>
+            <th>Max KL</th>
+            <th>Mean KL</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        <tr onclick="window.location.href='/weight/718.html'" style="cursor:pointer">
+            <td>#718</td>
+            <td><code>blocks.0.mlp.W_out</code></td>
+            <td>[1863, 968]</td>
+            <td class="kl-value">2.4633</td>
+            <td>0.003398</td>
+        </tr>
+        
+        <tr onclick="window.location.href='/weight/1166.html'" style="cursor:pointer">
+            <td>#1166</td>
+            <td><code>blocks.0.mlp.W_out</code></td>
+            <td>[1863, 773]</td>
+            <td class="kl-value">1.7583</td>
+            <td>0.001808</td>
+        </tr>
+        
+        <tr onclick="window.location.href='/weight/2617.html'" style="cursor:pointer">
+            <td>#2617</td>
+            <td><code>blocks.0.mlp.W_out</code></td>
+            <td>[1863, 495]</td>
+            <td class="kl-value">0.8604</td>
+            <td>0.001381</td>
+        </tr>
+        
+        <tr onclick="window.location.href='/weight/3180.html'" style="cursor:pointer">
+            <td>#3180</td>
+            <td><code>blocks.0.mlp.W_out</code></td>
+            <td>[1863, 360]</td>
+            <td class="kl-value">0.6373</td>
+            <td>0.000885</td>
+        </tr>
+        
+        <tr onclick="window.location.href='/weight/3694.html'" style="cursor:pointer">
+            <td>#3694</td>
+            <td><code>blocks.0.mlp.W_out</code></td>
+            <td>[1863, 915]</td>
+            <td class="kl-value">0.4525</td>
+            <td>0.001033</td>
+        </tr>
+        
+        <tr onclick="window.location.href='/weight/3714.html'" style="cursor:pointer">
+            <td>#3714</td>
+            <td><code>blocks.0.mlp.W_out</code></td>
+            <td>[1863, 126]</td>
+            <td class="kl-value">0.4328</td>
+            <td>0.000428</td>
+        </tr>
+        
+        <tr onclick="window.location.href='/weight/3745.html'" style="cursor:pointer">
+            <td>#3745</td>
+            <td><code>blocks.0.mlp.W_out</code></td>
+            <td>[1863, 903]</td>
+            <td class="kl-value">0.2944</td>
+            <td>0.000787</td>
+        </tr>
+        
+        <tr onclick="window.location.href='/weight/3747.html'" style="cursor:pointer">
+            <td>#3747</td>
+            <td><code>blocks.0.mlp.W_out</code></td>
+            <td>[1863, 756]</td>
+            <td class="kl-value">0.2026</td>
+            <td>0.000323</td>
+        </tr>
+        
+        <tr onclick="window.location.href='/weight/3748.html'" style="cursor:pointer">
+            <td>#3748</td>
+            <td><code>blocks.0.mlp.W_out</code></td>
+            <td>[1863, 396]</td>
+            <td class="kl-value">0.1069</td>
+            <td>0.000297</td>
+        </tr>
+        
+        <tr onclick="window.location.href='/weight/3749.html'" style="cursor:pointer">
+            <td>#3749</td>
+            <td><code>blocks.0.mlp.W_out</code></td>
+            <td>[1863, 267]</td>
+            <td class="kl-value">0.0995</td>
+            <td>0.000183</td>
+        </tr>
+        
+        <tr onclick="window.location.href='/weight/3750.html'" style="cursor:pointer">
+            <td>#3750</td>
+            <td><code>blocks.0.mlp.W_out</code></td>
+            <td>[1863, 696]</td>
+            <td class="kl-value">0.0833</td>
+            <td>0.000105</td>
+        </tr>
+        
+    </tbody>
+</table>
+
+    </main>
+    <script src="/static/app.js"></script>
+    
+</body>
+</html>

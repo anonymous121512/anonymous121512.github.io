@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layer 0 — Weightpedia</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+
+    <style>
+      .wp-banner {
+        display: flex; align-items: center; justify-content: center;
+        gap: 0.9rem; flex-wrap: wrap;
+        padding: 0.5rem 1.5rem;
+        background: linear-gradient(90deg, rgba(233,179,59,0.10), rgba(122,162,247,0.10));
+        border-bottom: 1px solid var(--border, #30363d);
+        font-size: 0.8rem; color: var(--text2, #8b949e);
+      }
+      .wp-banner-tag {
+        display: inline-block; padding: 2px 8px;
+        font-size: 0.68rem; font-weight: 600;
+        letter-spacing: 0.08em; text-transform: uppercase;
+        border-radius: 10px;
+        background: rgba(233,179,59,0.18);
+        color: #e9b33b;
+        border: 1px solid rgba(233,179,59,0.35);
+      }
+      .wp-banner-authors { color: var(--text, #e6edf3); }
+      .wp-banner-authors .wp-wip { color: #e9b33b; font-size: 0.7rem; margin-left: 0.25rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/index.html" class="nav-brand">Weightpedia</a>
+        <div class="nav-links">
+            <a href="/index.html">Index</a>
+        </div>
+    </nav>
+    <div class="wp-banner">
+        <span class="wp-banner-tag">Anonymous review</span>
+        <span>Submitted under anonymous review. Full version with case studies will be released alongside the paper.</span>
+    </div>
+
+    <main class="container">
+        
+<div x-data="layerWeights()" x-init="init()">
+    <div class="detail-nav">
+        <span></span>
+        <a href="/index.html" class="btn btn-secondary">All Layers</a>
+        
+        <a href="/layer/1.html" class="btn btn-secondary">Layer 1 &rarr;</a>
+        
+    </div>
+    <div class="detail-header">
+        <h1>Layer 0</h1>
+        <div class="detail-stats">
+            <div class="detail-stat">
+                <span class="detail-stat-label">Profiled</span>
+                <span class="detail-stat-value">101</span>
+            </div>
+            <div class="detail-stat">
+                <span class="detail-stat-label">With effect</span>
+                <span class="detail-stat-value">21,656</span>
+            </div>
+            <div class="detail-stat">
+                <span class="detail-stat-label">Scanned</span>
+                <span class="detail-stat-value">44,777</span>
+            </div>
+            <div class="detail-stat">
+                <span class="detail-stat-label">% with effect</span>
+                <span class="detail-stat-value">48.4%</span>
+            </div>
+        </div>
+    </div>
+    <div class="filter-bar" style="display:flex; gap:1rem; margin:1rem 0; align-items:center; flex-wrap:wrap;">
+        <select x-model="filterComponent" @change="applyFilters()" style="padding:0.3rem 0.6rem; background:#1e1f2e; color:#ccc; border:1px solid #333; border-radius:4px;">
+            <option value="">All components</option>
+            
+            <option value="mlp.W_in">mlp.W_in</option>
+            
+            <option value="mlp.W_out">mlp.W_out</option>
+            
+        </select>
+        <input type="text" placeholder="Search param name..." x-model="searchQ" @input="applyFilters()"
+               style="padding:0.3rem 0.6rem; background:#1e1f2e; color:#ccc; border:1px solid #333; border-radius:4px; width:200px;">
+        <span class="text-muted" x-text="filtered.length + ' / ' + allWeights.length + ' weights'"></span>
+    </div>
+    <table class="weight-table">
+        <thead>
+            <tr>
+                <th @click="setSort('rank')" style="cursor:pointer">Rank</th>
+                <th @click="setSort('param_name')" style="cursor:pointer">Weight</th>
+                <th>Indices</th>
+                <th @click="setSort('component')" style="cursor:pointer">Component</th>
+                <th @click="setSort('max_kl')" style="cursor:pointer">Max KL</th>
+            </tr>
+        </thead>
+        <tbody>
+            <template x-for="w in paginated" :key="w.rank">
+                <tr @click="window.location.href='/weight/' + w.rank + '.html'" style="cursor:pointer">
+                    <td x-text="'#' + w.rank"></td>
+                    <td><code x-text="w.param_name"></code></td>
+                    <td x-text="JSON.stringify(w.indices)"></td>
+                    <td x-text="w.component"></td>
+                    <td class="kl-value" x-text="w.max_kl.toFixed(4)"></td>
+                </tr>
+            </template>
+        </tbody>
+    </table>
+    <div style="display:flex; justify-content:center; gap:1rem; margin:1rem 0; align-items:center;">
+        <button class="btn btn-secondary btn-sm" @click="page = Math.max(0, page-1)" :disabled="page === 0">&larr; Prev</button>
+        <span class="text-muted" x-text="'Page ' + (page+1) + ' / ' + totalPages"></span>
+        <button class="btn btn-secondary btn-sm" @click="page = Math.min(totalPages-1, page+1)" :disabled="page >= totalPages-1">Next &rarr;</button>
+    </div>
+</div>
+
+<script>
+const LAYER_WEIGHTS = [{"rank": 1, "param_name": "blocks.0.mlp.W_in", "indices": [296, 3079], "original_value": null, "max_kl": 74.13378143310547, "mean_kl": 0.0076722861267626286, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 2, "param_name": "blocks.0.mlp.W_in", "indices": [570, 3079], "original_value": null, "max_kl": 73.6556396484375, "mean_kl": 0.015093636699020863, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 3, "param_name": "blocks.0.mlp.W_in", "indices": [418, 3079], "original_value": null, "max_kl": 71.01325988769531, "mean_kl": 0.008053284138441086, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 4, "param_name": "blocks.0.mlp.W_in", "indices": [6, 3079], "original_value": null, "max_kl": 65.17050170898438, "mean_kl": 0.0011045299470424652, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 5, "param_name": "blocks.0.mlp.W_in", "indices": [815, 3079], "original_value": null, "max_kl": 64.2147216796875, "mean_kl": 0.0047615896910429, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 6, "param_name": "blocks.0.mlp.W_out", "indices": [3079, 365], "original_value": null, "max_kl": 47.96678161621094, "mean_kl": 0.019095303490757942, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 7, "param_name": "blocks.0.mlp.W_in", "indices": [414, 2451], "original_value": null, "max_kl": 47.17735290527344, "mean_kl": 0.0034349942579865456, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 8, "param_name": "blocks.0.mlp.W_in", "indices": [720, 2451], "original_value": null, "max_kl": 43.558380126953125, "mean_kl": 0.0011610024375841022, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 9, "param_name": "blocks.0.mlp.W_in", "indices": [352, 2451], "original_value": null, "max_kl": 43.552886962890625, "mean_kl": 0.004589608404785395, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 10, "param_name": "blocks.0.mlp.W_in", "indices": [552, 2451], "original_value": null, "max_kl": 39.5650520324707, "mean_kl": 0.005012769252061844, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 11, "param_name": "blocks.0.mlp.W_in", "indices": [534, 2451], "original_value": null, "max_kl": 37.61659622192383, "mean_kl": 0.0019061557250097394, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 12, "param_name": "blocks.0.mlp.W_in", "indices": [831, 2451], "original_value": null, "max_kl": 33.76337814331055, "mean_kl": 0.0013196429936215281, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 14, "param_name": "blocks.0.mlp.W_in", "indices": [794, 3714], "original_value": null, "max_kl": 28.555959701538086, "mean_kl": 0.054990753531455994, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 15, "param_name": "blocks.0.mlp.W_in", "indices": [934, 192], "original_value": null, "max_kl": 27.917823791503906, "mean_kl": 0.01699487306177616, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 16, "param_name": "blocks.0.mlp.W_in", "indices": [464, 1863], "original_value": null, "max_kl": 26.766170501708984, "mean_kl": 0.009274281561374664, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 17, "param_name": "blocks.0.mlp.W_in", "indices": [116, 2994], "original_value": null, "max_kl": 26.193923950195312, "mean_kl": 0.004103287123143673, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 18, "param_name": "blocks.0.mlp.W_in", "indices": [658, 192], "original_value": null, "max_kl": 25.05470848083496, "mean_kl": 0.003923754207789898, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 19, "param_name": "blocks.0.mlp.W_in", "indices": [638, 2994], "original_value": null, "max_kl": 24.350811004638672, "mean_kl": 0.0033731325529515743, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 20, "param_name": "blocks.0.mlp.W_in", "indices": [61, 2994], "original_value": null, "max_kl": 23.7567081451416, "mean_kl": 0.0034634785261005163, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 21, "param_name": "blocks.0.mlp.W_in", "indices": [439, 2956], "original_value": null, "max_kl": 23.322917938232422, "mean_kl": 0.0005922109703533351, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 22, "param_name": "blocks.0.mlp.W_in", "indices": [1011, 192], "original_value": null, "max_kl": 23.077409744262695, "mean_kl": 0.008010895922780037, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 23, "param_name": "blocks.0.mlp.W_in", "indices": [71, 1863], "original_value": null, "max_kl": 22.732572555541992, "mean_kl": 0.004689660854637623, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 24, "param_name": "blocks.0.mlp.W_in", "indices": [309, 2994], "original_value": null, "max_kl": 22.67169189453125, "mean_kl": 0.0012135086581110954, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 25, "param_name": "blocks.0.mlp.W_in", "indices": [233, 2994], "original_value": null, "max_kl": 21.46036148071289, "mean_kl": 0.0014706611400470138, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 26, "param_name": "blocks.0.mlp.W_in", "indices": [971, 2994], "original_value": null, "max_kl": 18.933238983154297, "mean_kl": 0.0002196310379076749, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 28, "param_name": "blocks.0.mlp.W_in", "indices": [170, 2556], "original_value": null, "max_kl": 17.59987449645996, "mean_kl": 0.00012773135676980019, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 29, "param_name": "blocks.0.mlp.W_in", "indices": [696, 2994], "original_value": null, "max_kl": 17.578271865844727, "mean_kl": 0.001418649684637785, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 30, "param_name": "blocks.0.mlp.W_in", "indices": [395, 1863], "original_value": null, "max_kl": 17.113719940185547, "mean_kl": 0.00202253763563931, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 31, "param_name": "blocks.0.mlp.W_out", "indices": [131, 455], "original_value": null, "max_kl": 16.911006927490234, "mean_kl": 0.1468823105096817, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 32, "param_name": "blocks.0.mlp.W_in", "indices": [768, 3761], "original_value": null, "max_kl": 16.64329719543457, "mean_kl": 0.039188873022794724, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 33, "param_name": "blocks.0.mlp.W_in", "indices": [924, 3761], "original_value": null, "max_kl": 16.297563552856445, "mean_kl": 0.03774940222501755, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 34, "param_name": "blocks.0.mlp.W_in", "indices": [799, 1863], "original_value": null, "max_kl": 16.05851936340332, "mean_kl": 0.002183081116527319, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 35, "param_name": "blocks.0.mlp.W_out", "indices": [2451, 365], "original_value": null, "max_kl": 15.87203311920166, "mean_kl": 0.0018014706438407302, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 37, "param_name": "blocks.0.mlp.W_in", "indices": [891, 3931], "original_value": null, "max_kl": 15.218606948852539, "mean_kl": 0.0012663037050515413, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 38, "param_name": "blocks.0.mlp.W_in", "indices": [615, 3394], "original_value": null, "max_kl": 15.07223892211914, "mean_kl": 0.005382280796766281, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 39, "param_name": "blocks.0.mlp.W_in", "indices": [837, 1499], "original_value": null, "max_kl": 14.405841827392578, "mean_kl": 0.0021475080866366625, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 40, "param_name": "blocks.0.mlp.W_in", "indices": [578, 1863], "original_value": null, "max_kl": 13.650525093078613, "mean_kl": 0.005442311987280846, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 41, "param_name": "blocks.0.mlp.W_out", "indices": [192, 13], "original_value": null, "max_kl": 13.467987060546875, "mean_kl": 0.007085546851158142, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 43, "param_name": "blocks.0.mlp.W_in", "indices": [388, 2994], "original_value": null, "max_kl": 13.351593017578125, "mean_kl": 0.0002686537627596408, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 45, "param_name": "blocks.0.mlp.W_in", "indices": [119, 1499], "original_value": null, "max_kl": 13.196878433227539, "mean_kl": 0.0004434752045199275, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 46, "param_name": "blocks.0.mlp.W_in", "indices": [342, 3714], "original_value": null, "max_kl": 13.172739028930664, "mean_kl": 0.004263461101800203, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 47, "param_name": "blocks.0.mlp.W_in", "indices": [342, 1916], "original_value": null, "max_kl": 13.017263412475586, "mean_kl": 0.0020915246568620205, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 48, "param_name": "blocks.0.mlp.W_in", "indices": [593, 1499], "original_value": null, "max_kl": 12.541479110717773, "mean_kl": 0.0005601916927844286, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 50, "param_name": "blocks.0.mlp.W_in", "indices": [272, 3761], "original_value": null, "max_kl": 12.332895278930664, "mean_kl": 0.014935352839529514, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 51, "param_name": "blocks.0.mlp.W_out", "indices": [3401, 132], "original_value": null, "max_kl": 12.29788589477539, "mean_kl": 0.0175209678709507, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 52, "param_name": "blocks.0.mlp.W_in", "indices": [609, 2956], "original_value": null, "max_kl": 12.246402740478516, "mean_kl": 0.011123130097985268, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 53, "param_name": "blocks.0.mlp.W_in", "indices": [749, 632], "original_value": null, "max_kl": 12.153884887695312, "mean_kl": 0.028904037550091743, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 54, "param_name": "blocks.0.mlp.W_in", "indices": [1020, 1499], "original_value": null, "max_kl": 11.844802856445312, "mean_kl": 0.0015666536055505276, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 56, "param_name": "blocks.0.mlp.W_in", "indices": [113, 2994], "original_value": null, "max_kl": 11.728721618652344, "mean_kl": 0.0015914213145151734, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 57, "param_name": "blocks.0.mlp.W_in", "indices": [923, 3684], "original_value": null, "max_kl": 11.634580612182617, "mean_kl": 0.0005512718926183879, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 59, "param_name": "blocks.0.mlp.W_out", "indices": [1843, 132], "original_value": null, "max_kl": 11.586230278015137, "mean_kl": 0.0014947898453101516, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 60, "param_name": "blocks.0.mlp.W_in", "indices": [727, 2956], "original_value": null, "max_kl": 11.450180053710938, "mean_kl": 0.0010578945511952043, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 61, "param_name": "blocks.0.mlp.W_in", "indices": [865, 1168], "original_value": null, "max_kl": 11.399055480957031, "mean_kl": 0.036879610270261765, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 62, "param_name": "blocks.0.mlp.W_in", "indices": [879, 2556], "original_value": null, "max_kl": 11.381840705871582, "mean_kl": 0.0004352786054369062, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 63, "param_name": "blocks.0.mlp.W_in", "indices": [71, 3394], "original_value": null, "max_kl": 11.237874031066895, "mean_kl": 0.0027331041637808084, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 64, "param_name": "blocks.0.mlp.W_in", "indices": [552, 3714], "original_value": null, "max_kl": 11.19120979309082, "mean_kl": 0.007637453265488148, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 65, "param_name": "blocks.0.mlp.W_in", "indices": [884, 1499], "original_value": null, "max_kl": 11.129328727722168, "mean_kl": 0.0023602936416864395, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 66, "param_name": "blocks.0.mlp.W_out", "indices": [1916, 233], "original_value": null, "max_kl": 11.12215518951416, "mean_kl": 0.004875792656093836, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 67, "param_name": "blocks.0.mlp.W_in", "indices": [653, 876], "original_value": null, "max_kl": 11.012276649475098, "mean_kl": 0.0009050254011526704, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 69, "param_name": "blocks.0.mlp.W_out", "indices": [192, 8], "original_value": null, "max_kl": 10.946859359741211, "mean_kl": 0.0044313217513263226, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 70, "param_name": "blocks.0.mlp.W_in", "indices": [578, 3394], "original_value": null, "max_kl": 10.660379409790039, "mean_kl": 0.00384960207156837, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 71, "param_name": "blocks.0.mlp.W_in", "indices": [362, 3714], "original_value": null, "max_kl": 10.609382629394531, "mean_kl": 0.0027037065010517836, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 78, "param_name": "blocks.0.mlp.W_in", "indices": [897, 2956], "original_value": null, "max_kl": 9.932901382446289, "mean_kl": 0.00021278658823575824, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 79, "param_name": "blocks.0.mlp.W_in", "indices": [909, 3714], "original_value": null, "max_kl": 9.902997016906738, "mean_kl": 0.0003191555733792484, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 80, "param_name": "blocks.0.mlp.W_in", "indices": [1018, 2582], "original_value": null, "max_kl": 9.661163330078125, "mean_kl": 0.01383271999657154, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 84, "param_name": "blocks.0.mlp.W_in", "indices": [581, 1843], "original_value": null, "max_kl": 9.34280776977539, "mean_kl": 0.002025507390499115, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 85, "param_name": "blocks.0.mlp.W_in", "indices": [840, 1989], "original_value": null, "max_kl": 9.25782299041748, "mean_kl": 0.014978167600929737, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 86, "param_name": "blocks.0.mlp.W_out", "indices": [2451, 138], "original_value": null, "max_kl": 9.190189361572266, "mean_kl": 0.00010547459532972425, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 87, "param_name": "blocks.0.mlp.W_in", "indices": [782, 2956], "original_value": null, "max_kl": 9.053954124450684, "mean_kl": 0.0023775510489940643, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 89, "param_name": "blocks.0.mlp.W_in", "indices": [872, 3714], "original_value": null, "max_kl": 8.822418212890625, "mean_kl": 0.00010124684922629967, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 90, "param_name": "blocks.0.mlp.W_in", "indices": [790, 2956], "original_value": null, "max_kl": 8.817981719970703, "mean_kl": 0.00033609135425649583, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 91, "param_name": "blocks.0.mlp.W_in", "indices": [971, 1499], "original_value": null, "max_kl": 8.485488891601562, "mean_kl": 0.00010388057125965133, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 92, "param_name": "blocks.0.mlp.W_in", "indices": [584, 3868], "original_value": null, "max_kl": 8.4518461227417, "mean_kl": 0.044084999710321426, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 93, "param_name": "blocks.0.mlp.W_out", "indices": [2318, 365], "original_value": null, "max_kl": 8.422983169555664, "mean_kl": 0.0005077910609543324, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 94, "param_name": "blocks.0.mlp.W_in", "indices": [132, 1527], "original_value": null, "max_kl": 8.399516105651855, "mean_kl": 0.001363435061648488, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 97, "param_name": "blocks.0.mlp.W_out", "indices": [3910, 749], "original_value": null, "max_kl": 8.365015983581543, "mean_kl": 0.03315124288201332, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 98, "param_name": "blocks.0.mlp.W_in", "indices": [600, 1499], "original_value": null, "max_kl": 8.340180397033691, "mean_kl": 0.0003787802124861628, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 103, "param_name": "blocks.0.mlp.W_in", "indices": [131, 1863], "original_value": null, "max_kl": 8.040738105773926, "mean_kl": 0.03084331750869751, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 163, "param_name": "blocks.0.mlp.W_in", "indices": [678, 1863], "original_value": null, "max_kl": 5.973052501678467, "mean_kl": 0.004916786681860685, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 172, "param_name": "blocks.0.mlp.W_in", "indices": [207, 863], "original_value": null, "max_kl": 5.856354236602783, "mean_kl": 0.0003997902385890484, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 208, "param_name": "blocks.0.mlp.W_out", "indices": [863, 460], "original_value": null, "max_kl": 5.2127556800842285, "mean_kl": 0.0022929406259208918, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 367, "param_name": "blocks.0.mlp.W_in", "indices": [294, 863], "original_value": null, "max_kl": 3.7429816722869873, "mean_kl": 0.000933306582737714, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 716, "param_name": "blocks.0.mlp.W_out", "indices": [863, 985], "original_value": null, "max_kl": 2.464121103286743, "mean_kl": 0.0010149053996428847, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 718, "param_name": "blocks.0.mlp.W_out", "indices": [1863, 968], "original_value": null, "max_kl": 2.463339328765869, "mean_kl": 0.0033980458974838257, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 808, "param_name": "blocks.0.mlp.W_in", "indices": [864, 863], "original_value": null, "max_kl": 2.2599728107452393, "mean_kl": 0.0006401205901056528, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 1032, "param_name": "blocks.0.mlp.W_in", "indices": [87, 1863], "original_value": null, "max_kl": 1.918367624282837, "mean_kl": 5.493078424478881e-05, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 1122, "param_name": "blocks.0.mlp.W_in", "indices": [463, 863], "original_value": null, "max_kl": 1.808722972869873, "mean_kl": 0.00013261301501188427, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 1166, "param_name": "blocks.0.mlp.W_out", "indices": [1863, 773], "original_value": null, "max_kl": 1.7582929134368896, "mean_kl": 0.0018081719754263759, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 2101, "param_name": "blocks.0.mlp.W_in", "indices": [558, 1863], "original_value": null, "max_kl": 1.0569665431976318, "mean_kl": 0.0009060120792128146, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 2617, "param_name": "blocks.0.mlp.W_out", "indices": [1863, 495], "original_value": null, "max_kl": 0.8603707551956177, "mean_kl": 0.0013805795460939407, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 3180, "param_name": "blocks.0.mlp.W_out", "indices": [1863, 360], "original_value": null, "max_kl": 0.6373035311698914, "mean_kl": 0.000885447661858052, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 3661, "param_name": "blocks.0.mlp.W_out", "indices": [863, 363], "original_value": null, "max_kl": 0.46927523612976074, "mean_kl": 5.272776979836635e-05, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 3694, "param_name": "blocks.0.mlp.W_out", "indices": [1863, 915], "original_value": null, "max_kl": 0.4525323808193207, "mean_kl": 0.0010325672337785363, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 3714, "param_name": "blocks.0.mlp.W_out", "indices": [1863, 126], "original_value": null, "max_kl": 0.4327854514122009, "mean_kl": 0.00042838763329200447, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 3745, "param_name": "blocks.0.mlp.W_out", "indices": [1863, 903], "original_value": null, "max_kl": 0.2944260835647583, "mean_kl": 0.0007867087260819972, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 3747, "param_name": "blocks.0.mlp.W_out", "indices": [1863, 756], "original_value": null, "max_kl": 0.20255234837532043, "mean_kl": 0.0003234867181163281, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 3748, "param_name": "blocks.0.mlp.W_out", "indices": [1863, 396], "original_value": null, "max_kl": 0.1069125235080719, "mean_kl": 0.0002966957981698215, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 3749, "param_name": "blocks.0.mlp.W_out", "indices": [1863, 267], "original_value": null, "max_kl": 0.09946589171886444, "mean_kl": 0.00018266438564751297, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 3750, "param_name": "blocks.0.mlp.W_out", "indices": [1863, 696], "original_value": null, "max_kl": 0.08334026485681534, "mean_kl": 0.00010478168405825272, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}, {"rank": 3751, "param_name": "blocks.0.mlp.W_in", "indices": [299, 1863], "original_value": null, "max_kl": 0.012146580964326859, "mean_kl": 3.573052163119428e-05, "layer": 0, "component": "mlp.W_in", "has_deep_profile": true}, {"rank": 3752, "param_name": "blocks.0.mlp.W_out", "indices": [863, 606], "original_value": null, "max_kl": 0.002601924352347851, "mean_kl": 3.099633204328711e-06, "layer": 0, "component": "mlp.W_out", "has_deep_profile": true}];
+function layerWeights() {
+    return {
+        allWeights: LAYER_WEIGHTS,
+        filtered: [],
+        paginated: [],
+        filterComponent: '',
+        searchQ: '',
+        sortField: 'max_kl',
+        sortOrder: 'desc',
+        page: 0,
+        perPage: 50,
+        totalPages: 1,
+        init() { this.applyFilters(); },
+        applyFilters() {
+            let results = [...this.allWeights];
+            if (this.filterComponent) results = results.filter(w => w.component === this.filterComponent);
+            if (this.searchQ) {
+                const q = this.searchQ.toLowerCase();
+                results = results.filter(w => w.param_name.toLowerCase().includes(q));
+            }
+            const mult = this.sortOrder === 'asc' ? 1 : -1;
+            const f = this.sortField;
+            results.sort((a,b) => {
+                const va = a[f] ?? '', vb = b[f] ?? '';
+                if (typeof va === 'number' && typeof vb === 'number') return (va - vb) * mult;
+                return String(va).localeCompare(String(vb)) * mult;
+            });
+            this.filtered = results;
+            this.totalPages = Math.max(1, Math.ceil(results.length / this.perPage));
+            this.page = Math.min(this.page, this.totalPages - 1);
+            this.paginated = results.slice(this.page * this.perPage, (this.page+1) * this.perPage);
+        },
+        setSort(field) {
+            if (this.sortField === field) this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+            else { this.sortField = field; this.sortOrder = field === 'max_kl' ? 'desc' : 'asc'; }
+            this.applyFilters();
+        },
+    };
+}
+</script>
+
+    </main>
+    <script src="/static/app.js"></script>
+    
+</body>
+</html>

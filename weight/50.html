@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weight #50 — blocks.0.mlp.W_in</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+
+    <style>
+      .wp-banner {
+        display: flex; align-items: center; justify-content: center;
+        gap: 0.9rem; flex-wrap: wrap;
+        padding: 0.5rem 1.5rem;
+        background: linear-gradient(90deg, rgba(233,179,59,0.10), rgba(122,162,247,0.10));
+        border-bottom: 1px solid var(--border, #30363d);
+        font-size: 0.8rem; color: var(--text2, #8b949e);
+      }
+      .wp-banner-tag {
+        display: inline-block; padding: 2px 8px;
+        font-size: 0.68rem; font-weight: 600;
+        letter-spacing: 0.08em; text-transform: uppercase;
+        border-radius: 10px;
+        background: rgba(233,179,59,0.18);
+        color: #e9b33b;
+        border: 1px solid rgba(233,179,59,0.35);
+      }
+      .wp-banner-authors { color: var(--text, #e6edf3); }
+      .wp-banner-authors .wp-wip { color: #e9b33b; font-size: 0.7rem; margin-left: 0.25rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/index.html" class="nav-brand">Weightpedia</a>
+        <div class="nav-links">
+            <a href="/index.html">Index</a>
+        </div>
+    </nav>
+    <div class="wp-banner">
+        <span class="wp-banner-tag">Anonymous review</span>
+        <span>Submitted under anonymous review. Full version with case studies will be released alongside the paper.</span>
+    </div>
+
+    <main class="container">
+        
+<div x-data="weightDetail()" x-init="init()">
+    <!-- Navigation -->
+    <div class="detail-nav">
+        
+        <a href="/weight/49.html" class="btn btn-secondary">&larr; #49</a>
+        
+        <a href="/index.html" class="btn btn-secondary">Back to Index</a>
+        
+        <a href="/weight/51.html" class="btn btn-secondary">#51 &rarr;</a>
+        
+    </div>
+    
+
+
+
+    <!-- Header -->
+    <div class="detail-header">
+        <div class="detail-title">
+            <h1>
+                <span class="rank-badge">#50</span>
+                <code>blocks.0.mlp.W_in</code>
+                <span class="indices">[272, 3761]</span>
+            </h1>
+
+        </div>
+
+
+        <div class="detail-stats">
+            <div class="detail-stat">
+                <span class="detail-stat-label">Layer</span>
+                <span class="detail-stat-value">0</span>
+            </div>
+            <div class="detail-stat">
+                <span class="detail-stat-label">Component</span>
+                <span class="detail-stat-value">mlp.W_in</span>
+            </div>
+            <div class="detail-stat">
+                <span class="detail-stat-label">Weight Value</span>
+                <span class="detail-stat-value">—</span>
+            </div>
+            <div class="detail-stat">
+                <span class="detail-stat-label">Max KL</span>
+                <span class="detail-stat-value kl-value">12.333</span>
+            </div>
+            <div class="detail-stat">
+                <span class="detail-stat-label">Mean KL</span>
+                <span class="detail-stat-value">0.0149</span>
+            </div>
+            
+        </div>
+    </div>
+
+
+    <!-- === DEEP PROFILE === -->
+    
+    <div x-data="deepProfile()" x-init="init()">
+
+        <!-- Section: Unembedding Readout -->
+        <template x-if="dpData && dpData.unembed_readout">
+            <section class="dp-section dp-unembed-section">
+                <div class="dp-section-header">
+                    <h2>Unembedding Readout</h2>
+                    <span class="text-muted">Residual dim <span x-text="dpData.unembed_readout.resid_dim"></span> &rarr; output tokens via W<sub>U</sub></span>
+                </div>
+                <div class="dp-unembed-cols">
+                    <div class="dp-unembed-col dp-unembed-promoted">
+                        <div class="dp-unembed-col-header">Promoted tokens</div>
+                        <div class="dp-unembed-tokens">
+                            <template x-for="t in dpData.unembed_readout.promoted.slice(0, 10)" :key="'p'+t.token_id">
+                                <span class="dp-unembed-chip dp-unembed-chip-pos">
+                                    <span class="dp-unembed-tok" x-text="t.token"></span>
+                                    <span class="dp-unembed-score" x-text="t.score.toFixed(3)"></span>
+                                </span>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="dp-unembed-col dp-unembed-suppressed">
+                        <div class="dp-unembed-col-header">Suppressed tokens</div>
+                        <div class="dp-unembed-tokens">
+                            <template x-for="t in dpData.unembed_readout.suppressed.slice(0, 10)" :key="'s'+t.token_id">
+                                <span class="dp-unembed-chip dp-unembed-chip-neg">
+                                    <span class="dp-unembed-tok" x-text="t.token"></span>
+                                    <span class="dp-unembed-score" x-text="t.score.toFixed(3)"></span>
+                                </span>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <!-- Section A: Interactive KL Histogram -->
+        <section class="dp-section">
+            <div class="dp-section-header">
+                <h2>KL Histogram</h2>
+                <span class="text-muted" x-show="dpData" x-text="dpData ? dpData.kl_histogram.n_bins + ' bins' : ''"></span>
+            </div>
+            <div x-show="dpLoading" class="dp-loading"><span class="spinner"></span> Loading deep profile...</div>
+            <template x-if="dpData && dpData.kl_histogram">
+                <div>
+                    <div class="dp-hist-container" style="position:relative">
+                        <canvas x-ref="dpHistCanvas" width="800" height="350"
+                                @click="handleBinClick($event)"
+                                @mousemove="handleBinHover($event)"
+                                @mouseleave="hoveredBin = -1"></canvas>
+                        <div style="position:absolute; top:4px; right:80px; display:flex; gap:8px; align-items:center;">
+                            <button class="btn btn-sm" :class="cdf90Active ? '' : 'btn-secondary'"
+                                    @click="selectCdf90()"
+                                    title="Select bins that account for 90% of total KL mass">Select 90% CDF</button>
+                        </div>
+                    </div>
+                    <!-- CDF summary stats -->
+                    <div class="histogram-stats" x-show="cdfStats" style="margin-top:4px;">
+                        <template x-if="cdfStats">
+                            <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:center;">
+                                <span class="hist-stat">
+                                    <span class="hist-stat-label">Gini</span>
+                                    <span class="hist-stat-value" x-text="cdfStats.gini.toFixed(3)"></span>
+                                </span>
+                                <template x-for="t in ['0.5', '0.9', '0.95', '0.99']" :key="t">
+                                    <span class="hist-stat">
+                                        <span class="hist-stat-label" x-text="(t*100) + '% KL in'"></span>
+                                        <span class="hist-stat-value" x-text="cdfStats.concentration[t] + '/' + cdfStats.nBins + ' bins'"></span>
+                                    </span>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="dp-range-hint" x-show="klRangeStart < 0">
+                        <span class="text-muted">Click a bin to select it, or click two bins to select a range</span>
+                    </div>
+                    <div class="dp-bin-info" x-show="klRangeStart >= 0">
+                        <template x-if="klRangeEnd < 0">
+                            <div>
+                                <span>Bin <span x-text="klRangeStart"></span>:</span>
+                                <span class="bin-range" x-text="selectedBinRange"></span>
+                                <span x-text="selectedBinCount.toLocaleString() + ' positions'"></span>
+                                <span x-text="selectedBinExamples.length + ' examples'"></span>
+                                <template x-if="selectedBinCEDelta !== null">
+                                    <span class="ce-val" :class="selectedBinCEDelta >= 0 ? 'ce-val-pos' : 'ce-val-neg'"
+                                          x-text="'avg CE: ' + (selectedBinCEDelta >= 0 ? '+' : '') + sciFormat(selectedBinCEDelta)"></span>
+                                </template>
+                                <span class="text-muted" style="margin-left:8px">Click another bin to select a range</span>
+                            </div>
+                        </template>
+                        <template x-if="klRangeEnd >= 0">
+                            <div>
+                                <span>Bins <span x-text="Math.min(klRangeStart, klRangeEnd)"></span>&ndash;<span x-text="Math.max(klRangeStart, klRangeEnd)"></span>:</span>
+                                <span class="bin-range" x-text="selectedBinRange"></span>
+                                <span x-text="selectedBinCount.toLocaleString() + ' positions'"></span>
+                                <span x-text="selectedBinExamples.length + ' examples sampled'"></span>
+                                <span class="dp-range-kl-summary">
+                                    avg KL: <strong x-text="sciFormat(klRangeAvgKL)"></strong>
+                                </span>
+                                <template x-if="klRangeAvgCE !== null">
+                                    <span class="ce-val" :class="klRangeAvgCE >= 0 ? 'ce-val-pos' : 'ce-val-neg'"
+                                          x-text="'avg CE: ' + (klRangeAvgCE >= 0 ? '+' : '') + sciFormat(klRangeAvgCE)"></span>
+                                </template>
+                                <button class="btn btn-sm" @click="reshuffleKLRange()" title="Show different random examples from this range" style="margin-left:8px">Reshuffle</button>
+                                <button class="btn btn-sm btn-secondary" @click="clearKLRange()" style="margin-left:4px">Clear</button>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="histogram-stats" x-show="dpData.kl_histogram.percentiles">
+                        <template x-for="key in Object.keys(dpData.kl_histogram.percentiles)" :key="key">
+                            <span class="hist-stat">
+                                <span class="hist-stat-label" x-text="'p' + key"></span>
+                                <span class="hist-stat-value" x-text="sciFormat(dpData.kl_histogram.percentiles[key])"></span>
+                            </span>
+                        </template>
+                    </div>
+                    <!-- Example cards for selected bin(s) -->
+                    <div class="dp-example-grid" x-show="selectedBinExamples.length > 0">
+                        <template x-for="(ex, idx) in selectedBinExamples" :key="idx">
+                            <div class="dp-example-card">
+                                <div class="dp-example-header">
+                                    <span class="dp-example-token" x-text="ex.token_at_pos"></span>
+                                    <span class="dp-example-cat" x-text="ex.category"></span>
+                                    <span>pos <span x-text="ex.pos"></span></span>
+                                    <span class="kl-val" x-text="'KL=' + sciFormat(ex.kl_at_pos)"></span>
+                                    <template x-if="ex.ce_delta !== null && ex.ce_delta !== undefined">
+                                        <span class="ce-val" :class="ex.ce_delta >= 0 ? 'ce-val-pos' : 'ce-val-neg'"
+                                              x-text="'CE=' + (ex.ce_delta >= 0 ? '+' : '') + sciFormat(ex.ce_delta)"></span>
+                                    </template>
+                                </div>
+                                <div class="dp-example-body">
+                                    <div class="dp-token-sequence" :data-dp-tokens="JSON.stringify(ex.decoded_tokens)"
+                                         :data-dp-values="JSON.stringify(ex.prompt_kl)"
+                                         :data-dp-pos="ex.pos"
+                                         :data-dp-mode="'kl'"
+                                         x-init="$nextTick(() => renderDpTokens($el))"></div>
+                                    <div class="dp-prob-shifts">
+                                        <div class="dp-prob-col dp-prob-col-dec">
+                                            <div class="dp-prob-col-header">Prob decrease</div>
+                                            <template x-for="p in (ex.prob_decreases || []).slice(0, 4)" :key="p.token + 'dec'">
+                                                <div class="dp-prob-row">
+                                                    <span class="tok-name" x-text="p.token"></span>
+                                                    <span class="dp-prob-vals">
+                                                        <span class="dp-prob-orig" x-text="(p.orig_prob * 100).toFixed(1) + '%'"></span>
+                                                        <span class="dp-prob-arrow">&rarr;</span>
+                                                        <span class="dp-prob-pert" x-text="(p.pert_prob * 100).toFixed(1) + '%'"></span>
+                                                        <span class="dp-prob-delta dp-prob-delta-dec" x-text="(p.delta * 100).toFixed(1) + '%'"></span>
+                                                    </span>
+                                                </div>
+                                            </template>
+                                        </div>
+                                        <div class="dp-prob-col dp-prob-col-inc">
+                                            <div class="dp-prob-col-header">Prob increase</div>
+                                            <template x-for="p in (ex.prob_increases || []).slice(0, 4)" :key="p.token + 'inc'">
+                                                <div class="dp-prob-row">
+                                                    <span class="tok-name" x-text="p.token"></span>
+                                                    <span class="dp-prob-vals">
+                                                        <span class="dp-prob-orig" x-text="(p.orig_prob * 100).toFixed(1) + '%'"></span>
+                                                        <span class="dp-prob-arrow">&rarr;</span>
+                                                        <span class="dp-prob-pert" x-text="(p.pert_prob * 100).toFixed(1) + '%'"></span>
+                                                        <span class="dp-prob-delta dp-prob-delta-inc" x-text="'+' + (p.delta * 100).toFixed(1) + '%'"></span>
+                                                    </span>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template>
+        </section>
+
+        <!-- Section B: Source Activation Panel -->
+        <template x-if="dpData && dpData.source_activation">
+            <section class="dp-section">
+                <div class="dp-act-panel">
+                    <div class="dp-act-header">
+                        <span class="dp-act-title" x-text="'Source: ' + dpData.source_activation.label"></span>
+                        <span class="dp-act-stat">max <strong x-text="sciFormat(dpData.source_activation.stats.max_abs)"></strong></span>
+                        <span class="dp-act-stat">mean <strong x-text="sciFormat(dpData.source_activation.stats.mean)"></strong></span>
+                        <span class="dp-act-stat" x-show="dpData.source_activation.stats.frac_positive !== undefined">
+                            <strong x-text="(dpData.source_activation.stats.frac_positive * 100).toFixed(1) + '%'"></strong> positive
+                        </span>
+                    </div>
+                    <!-- Category distribution -->
+                    <div class="dp-cat-dist" x-show="dpData.source_activation.category_distribution_top1pct">
+                        <h4>Token categories (top 1% activations)</h4>
+                        <template x-for="entry in sortedCatDist(dpData.source_activation.category_distribution_top1pct)" :key="entry[0]">
+                            <div class="dp-cat-row">
+                                <span class="dp-cat-name" x-text="entry[0]"></span>
+                                <div class="dp-cat-bar-wrap">
+                                    <div class="dp-cat-bar" :style="'width:' + (entry[1].frac * 100) + '%; background:' + catColor(entry[0])"></div>
+                                </div>
+                                <span class="dp-cat-frac" x-text="(entry[1].frac * 100).toFixed(1) + '%'"></span>
+                                <span class="dp-cat-count" x-text="entry[1].count"></span>
+                            </div>
+                        </template>
+                    </div>
+                    <!-- Activation Histogram -->
+                    <template x-if="dpData.source_activation.act_histogram && dpData.source_activation.act_histogram.bins">
+                        <div class="dp-hist-section">
+                            <h4>Activation value distribution</h4>
+                            <div class="dp-hist-stats">
+                                <span x-text="dpData.source_activation.act_histogram.n_total.toLocaleString() + ' positions'"></span>
+                                <span x-text="dpData.source_activation.act_histogram.n_near_zero.toLocaleString() + ' near-zero'"></span>
+                            </div>
+                            <canvas x-ref="srcActHistCanvas" width="800" height="250"
+                                    style="width:100%; height:250px; cursor:pointer; border-radius:6px;"
+                                    @click="handleActBinClick($event, 'src')"
+                                    @mousemove="handleActBinHover($event, 'src')"></canvas>
+                            <!-- Selected bin/range info -->
+                            <div x-show="srcRangeStart >= 0" class="dp-bin-info">
+                                <span class="dp-bin-range" x-text="srcSelectedBinRange"></span>
+                                <span class="dp-bin-count" x-text="srcSelectedBinCount.toLocaleString() + ' positions'"></span>
+                                <span class="dp-bin-examples-count" x-text="srcSelectedBinExamples.length + ' examples'"></span>
+                                <template x-if="srcRangeEnd >= 0">
+                                    <span>
+                                        <button class="btn btn-sm" @click="reshuffleActRange('src')" style="margin-left:8px">Reshuffle</button>
+                                        <button class="btn btn-sm btn-secondary" @click="clearActRange('src')" style="margin-left:4px">Clear</button>
+                                    </span>
+                                </template>
+                                <template x-if="srcRangeEnd < 0">
+                                    <span class="text-muted" style="margin-left:8px">Click another bin for range</span>
+                                </template>
+                            </div>
+                            <!-- Example cards for selected bin -->
+                            <div class="dp-example-grid" x-show="srcSelectedBinExamples.length > 0" x-ref="srcActHistGrid">
+                                <template x-for="(ex, idx) in srcSelectedBinExamples" :key="'srcbin' + idx">
+                                    <div class="dp-example-card">
+                                        <div class="dp-example-header">
+                                            <span class="dp-example-token" x-text="ex.token_at_pos"></span>
+                                            <span class="dp-example-cat" x-text="ex.category"></span>
+                                            <span>pos <span x-text="ex.pos"></span></span>
+                                            <span class="act-val" :class="ex.value >= 0 ? 'act-val-pos' : 'act-val-neg'"
+                                                  x-text="sciFormat(ex.value)"></span>
+                                        </div>
+                                        <div class="dp-example-body">
+                                            <div class="dp-token-sequence" :data-dp-tokens="JSON.stringify(ex.decoded_tokens)"
+                                                 :data-dp-values="JSON.stringify(ex.prompt_activations)"
+                                                 :data-dp-pos="ex.pos"
+                                                 :data-dp-mode="'act'"
+                                                 x-init="$nextTick(() => renderDpTokens($el))"></div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                            <!-- Category breakdown for selected bin -->
+                            <div x-show="srcSelectedBin >= 0 && srcSelectedBinExamples.length > 0" class="dp-bin-cat-dist">
+                                <template x-for="entry in binCategoryDist(srcSelectedBinExamples)" :key="'srcbincat' + entry[0]">
+                                    <span class="dp-bin-cat-chip" :style="'border-color:' + catColor(entry[0])">
+                                        <span x-text="entry[0]"></span>
+                                        <strong x-text="entry[1].pct + '%'"></strong>
+                                    </span>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </section>
+        </template>
+
+        <!-- Section C: Target Activation Panel -->
+        <template x-if="dpData && dpData.target_activation">
+            <section class="dp-section">
+                <div class="dp-act-panel">
+                    <div class="dp-act-header">
+                        <span class="dp-act-title" x-text="'Target: ' + dpData.target_activation.label"></span>
+                        <span class="dp-act-stat">max <strong x-text="sciFormat(dpData.target_activation.stats.max_abs)"></strong></span>
+                        <span class="dp-act-stat">mean <strong x-text="sciFormat(dpData.target_activation.stats.mean)"></strong></span>
+                        <span class="dp-act-stat" x-show="dpData.target_activation.stats.frac_positive !== undefined">
+                            <strong x-text="(dpData.target_activation.stats.frac_positive * 100).toFixed(1) + '%'"></strong> positive
+                        </span>
+                    </div>
+                    <div class="dp-cat-dist" x-show="dpData.target_activation.category_distribution_top1pct">
+                        <h4>Token categories (top 1% activations)</h4>
+                        <template x-for="entry in sortedCatDist(dpData.target_activation.category_distribution_top1pct)" :key="entry[0]">
+                            <div class="dp-cat-row">
+                                <span class="dp-cat-name" x-text="entry[0]"></span>
+                                <div class="dp-cat-bar-wrap">
+                                    <div class="dp-cat-bar" :style="'width:' + (entry[1].frac * 100) + '%; background:' + catColor(entry[0])"></div>
+                                </div>
+                                <span class="dp-cat-frac" x-text="(entry[1].frac * 100).toFixed(1) + '%'"></span>
+                                <span class="dp-cat-count" x-text="entry[1].count"></span>
+                            </div>
+                        </template>
+                    </div>
+                    <!-- Activation Histogram -->
+                    <template x-if="dpData.target_activation.act_histogram && dpData.target_activation.act_histogram.bins">
+                        <div class="dp-hist-section">
+                            <h4>Activation value distribution</h4>
+                            <div class="dp-hist-stats">
+                                <span x-text="dpData.target_activation.act_histogram.n_total.toLocaleString() + ' positions'"></span>
+                                <span x-text="dpData.target_activation.act_histogram.n_near_zero.toLocaleString() + ' near-zero'"></span>
+                            </div>
+                            <canvas x-ref="tgtActHistCanvas" width="800" height="250"
+                                    style="width:100%; height:250px; cursor:pointer; border-radius:6px;"
+                                    @click="handleActBinClick($event, 'tgt')"
+                                    @mousemove="handleActBinHover($event, 'tgt')"></canvas>
+                            <!-- Selected bin/range info -->
+                            <div x-show="tgtRangeStart >= 0" class="dp-bin-info">
+                                <span class="dp-bin-range" x-text="tgtSelectedBinRange"></span>
+                                <span class="dp-bin-count" x-text="tgtSelectedBinCount.toLocaleString() + ' positions'"></span>
+                                <span class="dp-bin-examples-count" x-text="tgtSelectedBinExamples.length + ' examples'"></span>
+                                <template x-if="tgtRangeEnd >= 0">
+                                    <span>
+                                        <button class="btn btn-sm" @click="reshuffleActRange('tgt')" style="margin-left:8px">Reshuffle</button>
+                                        <button class="btn btn-sm btn-secondary" @click="clearActRange('tgt')" style="margin-left:4px">Clear</button>
+                                    </span>
+                                </template>
+                                <template x-if="tgtRangeEnd < 0">
+                                    <span class="text-muted" style="margin-left:8px">Click another bin for range</span>
+                                </template>
+                            </div>
+                            <!-- Example cards for selected bin -->
+                            <div class="dp-example-grid" x-show="tgtSelectedBinExamples.length > 0" x-ref="tgtActHistGrid">
+                                <template x-for="(ex, idx) in tgtSelectedBinExamples" :key="'tgtbin' + idx">
+                                    <div class="dp-example-card">
+                                        <div class="dp-example-header">
+                                            <span class="dp-example-token" x-text="ex.token_at_pos"></span>
+                                            <span class="dp-example-cat" x-text="ex.category"></span>
+                                            <span>pos <span x-text="ex.pos"></span></span>
+                                            <span class="act-val" :class="ex.value >= 0 ? 'act-val-pos' : 'act-val-neg'"
+                                                  x-text="sciFormat(ex.value)"></span>
+                                        </div>
+                                        <div class="dp-example-body">
+                                            <div class="dp-token-sequence" :data-dp-tokens="JSON.stringify(ex.decoded_tokens)"
+                                                 :data-dp-values="JSON.stringify(ex.prompt_activations)"
+                                                 :data-dp-pos="ex.pos"
+                                                 :data-dp-mode="'act'"
+                                                 x-init="$nextTick(() => renderDpTokens($el))"></div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                            <!-- Category breakdown for selected bin -->
+                            <div x-show="tgtSelectedBin >= 0 && tgtSelectedBinExamples.length > 0" class="dp-bin-cat-dist">
+                                <template x-for="entry in binCategoryDist(tgtSelectedBinExamples)" :key="'tgtbincat' + entry[0]">
+                                    <span class="dp-bin-cat-chip" :style="'border-color:' + catColor(entry[0])">
+                                        <span x-text="entry[0]"></span>
+                                        <strong x-text="entry[1].pct + '%'"></strong>
+                                    </span>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </section>
+        </template>
+
+    </div>
+    
+
+
+</div>
+
+    </main>
+    <script src="/static/app.js"></script>
+    
+<script>
+const BAND_COLORS = {
+    'top 0.1%': { fill: 'rgba(214,69,65,0.12)', active: 'rgba(214,69,65,0.30)', line: '#d64541', dot: '#d64541' },
+    'top 1%':   { fill: 'rgba(230,126,34,0.12)', active: 'rgba(230,126,34,0.30)', line: '#e67e22', dot: '#e67e22' },
+    'top 5%':   { fill: 'rgba(39,174,96,0.12)',  active: 'rgba(39,174,96,0.30)',  line: '#27ae60', dot: '#27ae60' },
+    'top 20%':  { fill: 'rgba(52,152,219,0.12)', active: 'rgba(52,152,219,0.30)', line: '#3498db', dot: '#3498db' },
+};
+
+function sciFormat(value) {
+    if (value === null || value === undefined) return '\u2014';
+    if (value === 0) return '0';
+    if (Math.abs(value) < 0.01) return value.toExponential(1);
+    if (Math.abs(value) < 1) return value.toFixed(4);
+    return value.toFixed(3);
+}
+
+const WEIGHT_RANK = 50;
+
+function weightDetail() {
+    return {
+        // Server data
+        quantileProfile: "",
+        actSource: null,
+        actTarget: null,
+        connSource: null,
+        connTarget: null,
+        // UI state
+        selectedBand: 'top 1%',
+        viewTab: 'weight',
+
+
+        // Computed (explicit reactive properties)
+        selectedQuantile: null,
+        bandThreshold: 0,
+        selectedSourceBand: null,
+        selectedTargetBand: null,
+        sourceLabel: '',
+        targetLabel: '',
+        bandLabels: [],
+
+        sciFormat,
+
+        _recompute() {
+            // Band-dependent data
+            if (this.quantileProfile) {
+                this.selectedQuantile = this.quantileProfile.find(q => q.label === this.selectedBand) || null;
+                this.bandThreshold = this.selectedQuantile ? this.selectedQuantile.kl_threshold : 0;
+                this.bandLabels = this.quantileProfile.map(q => ({
+                    label: q.label,
+                    color: (BAND_COLORS[q.label] || {}).dot || '#888',
+                }));
+            } else {
+                this.selectedQuantile = null;
+                this.bandLabels = [];
+            }
+
+            // Activation bands (name uses underscores)
+            const bandKey = this.selectedBand.replace(/ /g, '_');
+            if (this.actSource && this.actSource.profile && this.actSource.profile.bands) {
+                this.selectedSourceBand = this.actSource.profile.bands.find(b => b.name === bandKey) || null;
+            } else {
+                this.selectedSourceBand = null;
+            }
+            if (this.actTarget && this.actTarget.profile && this.actTarget.profile.bands) {
+                this.selectedTargetBand = this.actTarget.profile.bands.find(b => b.name === bandKey) || null;
+            } else {
+                this.selectedTargetBand = null;
+            }
+
+            // Labels (static, but compute here for simplicity)
+            if (this.actSource) {
+                this.sourceLabel = this.actSource.label;
+            } else if (this.connSource) {
+                if (this.connSource.type === 'residual_dim') this.sourceLabel = 'Residual dim ' + this.connSource.dim;
+                else if (this.connSource.type === 'mlp_neuron') this.sourceLabel = 'MLP neuron ' + this.connSource.neuron_idx;
+                else if (this.connSource.type === 'attn_head_channel') this.sourceLabel = 'Attn head ' + this.connSource.head;
+                else this.sourceLabel = '';
+            } else {
+                this.sourceLabel = '';
+            }
+            if (this.actTarget) {
+                this.targetLabel = this.actTarget.label;
+            } else if (this.connTarget) {
+                if (this.connTarget.type === 'residual_dim') this.targetLabel = 'Residual dim ' + this.connTarget.dim;
+                else if (this.connTarget.type === 'mlp_neuron') this.targetLabel = 'MLP neuron ' + this.connTarget.neuron_idx;
+                else if (this.connTarget.type === 'attn_head_channel') this.targetLabel = 'Attn head ' + this.connTarget.head;
+                else this.targetLabel = '';
+            } else {
+                this.targetLabel = '';
+            }
+        },
+
+        init() {
+            if (this.quantileProfile && this.quantileProfile.length > 0) {
+                const has1pct = this.quantileProfile.some(q => q.label === 'top 1%');
+                if (!has1pct) this.selectedBand = this.quantileProfile[0].label;
+            }
+            this._recompute();
+            this.$nextTick(() => {});
+        },
+
+        selectBand(label) {
+            this.selectedBand = label;
+            this._recompute();
+        },
+
+        getBandPositions(label) {
+            if (!this.quantileProfile) return '';
+            const q = this.quantileProfile.find(q => q.label === label);
+            return q ? q.n_positions.toLocaleString() : '';
+        },
+
+
+    };
+}
+
+// === Deep Profile Component ===
+const DP_CAT_COLORS = {
+    'keyword': '#c678dd', 'number': '#e5c07b', 'quote': '#e06c75',
+    'bracket': '#61afef', 'operator': '#56b6c2', 'identifier': '#98c379',
+    'whitespace': '#5c6370', 'newline': '#5c6370', 'comment': '#7f848e',
+    'string_content': '#98c379', 'other': '#abb2bf', 'punctuation': '#abb2bf',
+};
+
+function deepProfile() {
+    return {
+        dpData: null,
+        dpLoading: true,
+        selectedBin: -1,
+        hoveredBin: -1,
+        selectedBinRange: '',
+        selectedBinCount: 0,
+        selectedBinExamples: [],
+        _binLayout: null,  // {x, w} per bin for click detection
+        // KL range selection
+        klRangeStart: -1,
+        klRangeEnd: -1,
+        klRangeAvgKL: 0,
+        klRangeAvgCE: null,
+        selectedBinCEDelta: null,
+        // CDF overlay (always shown)
+        showCdf: true,
+        cdf90Active: false,
+        cdfStats: null,
+        // Activation histogram state (source)
+        srcSelectedBin: -1,
+        srcHoveredBin: -1,
+        srcSelectedBinRange: '',
+        srcSelectedBinCount: 0,
+        srcSelectedBinExamples: [],
+        _srcActBinLayout: null,
+        // Activation histogram range selection (source)
+        srcRangeStart: -1,
+        srcRangeEnd: -1,
+        // Activation histogram state (target)
+        tgtSelectedBin: -1,
+        tgtHoveredBin: -1,
+        tgtSelectedBinRange: '',
+        tgtSelectedBinCount: 0,
+        tgtSelectedBinExamples: [],
+        _tgtActBinLayout: null,
+        // Activation histogram range selection (target)
+        tgtRangeStart: -1,
+        tgtRangeEnd: -1,
+
+        sciFormat,
+
+        async init() {
+            try {
+                const resp = await fetch('/data/deep_profile_' + WEIGHT_RANK + '.json');
+                const data = await resp.json();
+                if (data.error) {
+                    console.error('Deep profile error:', data.error);
+                    this.dpLoading = false;
+                    return;
+                }
+                this.dpData = data;
+                this.dpLoading = false;
+                this._computeCdfStats();
+                this.$nextTick(() => {
+                    this.renderDpHistogram();
+                    // Auto-select a bin with examples (KL histogram)
+                    if (data.kl_histogram && data.kl_histogram.bins) {
+                        for (let i = data.kl_histogram.bins.length - 1; i >= 0; i--) {
+                            const bin = data.kl_histogram.bins[i];
+                            if (bin.examples && bin.examples.length > 0) {
+                                this.selectBin(i);
+                                break;
+                            }
+                        }
+                    }
+                    // Render activation histograms
+                    this.renderActHistogram('src');
+                    this.renderActHistogram('tgt');
+                    // Auto-select rightmost non-empty bin for each
+                    this._autoSelectActBin('src');
+                    this._autoSelectActBin('tgt');
+                });
+            } catch(e) {
+                console.error('Failed to load deep profile:', e);
+                this.dpLoading = false;
+            }
+        },
+
+        selectBin(idx) {
+            if (!this.dpData || !this.dpData.kl_histogram) return;
+            const bins = this.dpData.kl_histogram.bins;
+            if (idx < 0 || idx >= bins.length) return;
+            const bin = bins[idx];
+            this.cdf90Active = false;
+            this.selectedBin = idx;
+            this.selectedBinRange = '10^' + bin.log10_lo.toFixed(1) + ' to 10^' + bin.log10_hi.toFixed(1);
+            this.selectedBinCount = bin.count;
+            this.selectedBinExamples = bin.examples || [];
+            this.klRangeStart = idx;
+            this.klRangeEnd = -1;
+            this.klRangeAvgKL = 0;
+            this.klRangeAvgCE = null;
+            this.selectedBinCEDelta = (bin.mean_ce_delta !== undefined && bin.mean_ce_delta !== null) ? bin.mean_ce_delta : null;
+            this.$nextTick(() => {
+                this.renderDpHistogram();
+                document.querySelectorAll('.dp-example-grid .dp-token-sequence').forEach(el => this.renderDpTokens(el));
+            });
+        },
+
+        handleBinClick(event) {
+            const idx = this._getBinIndex(event);
+            if (idx < 0) return;
+            if (this.klRangeStart >= 0 && this.klRangeEnd < 0 && idx !== this.klRangeStart) {
+                // Second click: set range end
+                this.klRangeEnd = idx;
+                this._applyKLRange();
+            } else {
+                // First click or reset: select single bin
+                this.selectBin(idx);
+            }
+        },
+
+        _applyKLRange() {
+            const bins = this.dpData.kl_histogram.bins;
+            const lo = Math.min(this.klRangeStart, this.klRangeEnd);
+            const hi = Math.max(this.klRangeStart, this.klRangeEnd);
+            this.selectedBin = -1;  // clear single selection
+            // Compute range info
+            const rangeBinLo = bins[lo];
+            const rangeBinHi = bins[hi];
+            this.selectedBinRange = '10^' + rangeBinLo.log10_lo.toFixed(1) + ' to 10^' + rangeBinHi.log10_hi.toFixed(1);
+            let totalCount = 0;
+            let allExamples = [];
+            let klSum = 0;
+            let klN = 0;
+            let ceSum = 0;
+            let ceN = 0;
+            for (let i = lo; i <= hi; i++) {
+                totalCount += bins[i].count;
+                if (bins[i].examples) {
+                    for (const ex of bins[i].examples) {
+                        allExamples.push(ex);
+                        if (ex.kl_at_pos !== undefined) {
+                            klSum += ex.kl_at_pos;
+                            klN++;
+                        }
+                        if (ex.ce_delta !== null && ex.ce_delta !== undefined) {
+                            ceSum += ex.ce_delta;
+                            ceN++;
+                        }
+                    }
+                }
+            }
+            this.selectedBinCount = totalCount;
+            this.klRangeAvgKL = klN > 0 ? klSum / klN : 0;
+            this.klRangeAvgCE = ceN > 0 ? ceSum / ceN : null;
+            // Shuffle and sample up to 15 examples
+            this._shuffleArray(allExamples);
+            this.selectedBinExamples = allExamples.slice(0, 15);
+            this.$nextTick(() => {
+                this.renderDpHistogram();
+                document.querySelectorAll('.dp-example-grid .dp-token-sequence').forEach(el => this.renderDpTokens(el));
+            });
+        },
+
+        reshuffleKLRange() {
+            if (this.klRangeStart < 0 || this.klRangeEnd < 0) return;
+            this._applyKLRange();
+        },
+
+        clearKLRange() {
+            this.klRangeStart = -1;
+            this.klRangeEnd = -1;
+            this.selectedBin = -1;
+            this.selectedBinRange = '';
+            this.selectedBinCount = 0;
+            this.selectedBinExamples = [];
+            this.klRangeAvgKL = 0;
+            this.klRangeAvgCE = null;
+            this.selectedBinCEDelta = null;
+            this.cdf90Active = false;
+            this.$nextTick(() => this.renderDpHistogram());
+        },
+
+        selectCdf90() {
+            if (!this.dpData || !this.dpData.kl_histogram) return;
+            if (this.cdf90Active) { this.clearKLRange(); return; }
+            const bins = this.dpData.kl_histogram.bins;
+            if (!bins || bins.length === 0) return;
+
+            const klPerBin = bins.map(b => {
+                if (b.total_kl !== undefined) return b.total_kl;
+                if (b.count === 0) return 0;
+                const mid = (b.log10_lo + b.log10_hi) / 2;
+                return b.count * Math.pow(10, mid);
+            });
+            const totalKL = klPerBin.reduce((a, b) => a + b, 0);
+            if (totalKL === 0) return;
+
+            const indexed = klPerBin.map((kl, i) => ({ kl, i })).sort((a, b) => b.kl - a.kl);
+            let acc = 0;
+            const selected = new Set();
+            for (const { kl, i } of indexed) {
+                if (kl <= 0) continue;
+                selected.add(i);
+                acc += kl;
+                if (acc >= totalKL * 0.9) break;
+            }
+            if (selected.size === 0) return;
+
+            const lo = Math.min(...selected);
+            const hi = Math.max(...selected);
+
+            this.klRangeStart = lo;
+            this.klRangeEnd = hi;
+            this.cdf90Active = true;
+            this._applyKLRange();
+        },
+
+        _shuffleArray(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+        },
+
+        handleBinHover(event) {
+            this.hoveredBin = this._getBinIndex(event);
+        },
+
+        _getBinIndex(event) {
+            if (!this._binLayout || !this.dpData) return -1;
+            const canvas = this.$refs.dpHistCanvas;
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            for (let i = 0; i < this._binLayout.length; i++) {
+                const bl = this._binLayout[i];
+                if (x >= bl.x && x < bl.x + bl.w) return i;
+            }
+            return -1;
+        },
+
+        // ── Activation histogram methods ──
+        _getActHistData(which) {
+            if (!this.dpData) return null;
+            const act = which === 'src' ? this.dpData.source_activation : this.dpData.target_activation;
+            return act && act.act_histogram ? act.act_histogram : null;
+        },
+
+        selectActBin(idx, which) {
+            const hist = this._getActHistData(which);
+            if (!hist || !hist.bins) return;
+            if (idx < 0 || idx >= hist.bins.length) return;
+            const bin = hist.bins[idx];
+            const range = bin.lo.toFixed(3) + ' to ' + bin.hi.toFixed(3);
+            if (which === 'src') {
+                this.srcSelectedBin = idx;
+                this.srcSelectedBinRange = range;
+                this.srcSelectedBinCount = bin.count;
+                this.srcSelectedBinExamples = bin.examples || [];
+                this.srcRangeStart = idx;
+                this.srcRangeEnd = -1;
+            } else {
+                this.tgtSelectedBin = idx;
+                this.tgtSelectedBinRange = range;
+                this.tgtSelectedBinCount = bin.count;
+                this.tgtSelectedBinExamples = bin.examples || [];
+                this.tgtRangeStart = idx;
+                this.tgtRangeEnd = -1;
+            }
+            this.$nextTick(() => {
+                this.renderActHistogram(which);
+                const grid = which === 'src' ? this.$refs.srcActHistGrid : this.$refs.tgtActHistGrid;
+                if (grid) grid.querySelectorAll('.dp-token-sequence').forEach(el => this.renderDpTokens(el));
+            });
+        },
+
+        handleActBinClick(event, which) {
+            const idx = this._getActBinIndex(event, which);
+            if (idx < 0) return;
+            const rangeStart = which === 'src' ? this.srcRangeStart : this.tgtRangeStart;
+            const rangeEnd = which === 'src' ? this.srcRangeEnd : this.tgtRangeEnd;
+            if (rangeStart >= 0 && rangeEnd < 0 && idx !== rangeStart) {
+                // Second click: set range
+                if (which === 'src') this.srcRangeEnd = idx;
+                else this.tgtRangeEnd = idx;
+                this._applyActRange(which);
+            } else {
+                // First click or reset
+                this.selectActBin(idx, which);
+            }
+        },
+
+        _applyActRange(which) {
+            const hist = this._getActHistData(which);
+            if (!hist || !hist.bins) return;
+            const start = which === 'src' ? this.srcRangeStart : this.tgtRangeStart;
+            const end = which === 'src' ? this.srcRangeEnd : this.tgtRangeEnd;
+            const lo = Math.min(start, end);
+            const hi = Math.max(start, end);
+            const loEdge = hist.bins[lo].lo;
+            const hiEdge = hist.bins[hi].hi;
+            const range = loEdge.toFixed(3) + ' to ' + hiEdge.toFixed(3);
+            let totalCount = 0;
+            let allExamples = [];
+            for (let i = lo; i <= hi; i++) {
+                totalCount += hist.bins[i].count;
+                if (hist.bins[i].examples) allExamples.push(...hist.bins[i].examples);
+            }
+            this._shuffleArray(allExamples);
+            const sampled = allExamples.slice(0, 15);
+            if (which === 'src') {
+                this.srcSelectedBin = -1;
+                this.srcSelectedBinRange = range;
+                this.srcSelectedBinCount = totalCount;
+                this.srcSelectedBinExamples = sampled;
+            } else {
+                this.tgtSelectedBin = -1;
+                this.tgtSelectedBinRange = range;
+                this.tgtSelectedBinCount = totalCount;
+                this.tgtSelectedBinExamples = sampled;
+            }
+            this.$nextTick(() => {
+                this.renderActHistogram(which);
+                const grid = which === 'src' ? this.$refs.srcActHistGrid : this.$refs.tgtActHistGrid;
+                if (grid) grid.querySelectorAll('.dp-token-sequence').forEach(el => this.renderDpTokens(el));
+            });
+        },
+
+        reshuffleActRange(which) {
+            const start = which === 'src' ? this.srcRangeStart : this.tgtRangeStart;
+            const end = which === 'src' ? this.srcRangeEnd : this.tgtRangeEnd;
+            if (start < 0 || end < 0) return;
+            this._applyActRange(which);
+        },
+
+        clearActRange(which) {
+            if (which === 'src') {
+                this.srcRangeStart = -1; this.srcRangeEnd = -1;
+                this.srcSelectedBin = -1; this.srcSelectedBinRange = '';
+                this.srcSelectedBinCount = 0; this.srcSelectedBinExamples = [];
+            } else {
+                this.tgtRangeStart = -1; this.tgtRangeEnd = -1;
+                this.tgtSelectedBin = -1; this.tgtSelectedBinRange = '';
+                this.tgtSelectedBinCount = 0; this.tgtSelectedBinExamples = [];
+            }
+            this.$nextTick(() => this.renderActHistogram(which));
+        },
+
+        handleActBinHover(event, which) {
+            const idx = this._getActBinIndex(event, which);
+            if (which === 'src') this.srcHoveredBin = idx;
+            else this.tgtHoveredBin = idx;
+        },
+
+        _getActBinIndex(event, which) {
+            const layout = which === 'src' ? this._srcActBinLayout : this._tgtActBinLayout;
+            if (!layout) return -1;
+            const canvas = which === 'src' ? this.$refs.srcActHistCanvas : this.$refs.tgtActHistCanvas;
+            if (!canvas) return -1;
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            for (let i = 0; i < layout.length; i++) {
+                const bl = layout[i];
+                if (x >= bl.x && x < bl.x + bl.w) return i;
+            }
+            return -1;
+        },
+
+        _autoSelectActBin(which) {
+            const hist = this._getActHistData(which);
+            if (!hist || !hist.bins) return;
+            // Find rightmost bin with examples
+            for (let i = hist.bins.length - 1; i >= 0; i--) {
+                if (hist.bins[i].examples && hist.bins[i].examples.length > 0) {
+                    this.selectActBin(i, which);
+                    return;
+                }
+            }
+        },
+
+        _computeCdfStats() {
+            if (!this.dpData || !this.dpData.kl_histogram) return;
+            const hist = this.dpData.kl_histogram;
+            const bins = hist.bins;
+            if (!bins || bins.length === 0) return;
+
+            // If server provides precomputed stats, use them
+            if (hist.kl_gini !== undefined && hist.kl_concentration) {
+                this.cdfStats = {
+                    gini: hist.kl_gini,
+                    concentration: hist.kl_concentration,
+                    nBins: hist.n_bins,
+                };
+                return;
+            }
+
+            // Fallback: estimate total_kl per bin from bin edges
+            const klPerBin = bins.map(b => {
+                if (b.total_kl !== undefined) return b.total_kl;
+                // Approximate: count * geometric mean of bin edges
+                if (b.count === 0) return 0;
+                const mid = (b.log10_lo + b.log10_hi) / 2;
+                return b.count * Math.pow(10, mid);
+            });
+
+            const totalKL = klPerBin.reduce((a, b) => a + b, 0);
+            if (totalKL === 0) return;
+
+            // Concentration: sort bins by KL desc, find how many for each threshold
+            const sorted = [...klPerBin].sort((a, b) => b - a);
+            let cumsum = 0;
+            const concentration = {};
+            for (const t of [0.5, 0.9, 0.95, 0.99]) {
+                let needed = 0;
+                let acc = 0;
+                for (let i = 0; i < sorted.length; i++) {
+                    acc += sorted[i];
+                    needed++;
+                    if (acc >= totalKL * t) break;
+                }
+                concentration[String(t)] = needed;
+            }
+
+            // Gini coefficient
+            const sortedAsc = [...klPerBin].sort((a, b) => a - b);
+            const n = sortedAsc.length;
+            let sumProduct = 0;
+            for (let i = 0; i < n; i++) sumProduct += (i + 1) * sortedAsc[i];
+            const gini = totalKL > 0 ? (2 * sumProduct / (n * totalKL) - (n + 1) / n) : 0;
+
+            this.cdfStats = { gini, concentration, nBins: bins.length };
+
+            // Store per-bin KL for CDF rendering
+            this._binKL = klPerBin;
+            this._totalKL = totalKL;
+        },
+
+        renderActHistogram(which) {
+            const canvas = which === 'src' ? this.$refs.srcActHistCanvas : this.$refs.tgtActHistCanvas;
+            const hist = this._getActHistData(which);
+            if (!canvas || !hist || !hist.counts || hist.counts.length === 0) return;
+
+            const selectedBin = which === 'src' ? this.srcSelectedBin : this.tgtSelectedBin;
+            const hoveredBin = which === 'src' ? this.srcHoveredBin : this.tgtHoveredBin;
+
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            const W = rect.width, H = rect.height;
+            const pad = { top: 20, right: 30, bottom: 45, left: 65 };
+            const plotW = W - pad.left - pad.right;
+            const plotH = H - pad.top - pad.bottom;
+
+            ctx.fillStyle = '#1a1b26';
+            ctx.fillRect(0, 0, W, H);
+
+            const edges = hist.bin_edges;
+            const counts = hist.counts;
+            const maxCount = Math.max(...counts);
+            if (maxCount === 0) return;
+
+            const xMin = edges[0], xMax = edges[edges.length - 1];
+            const xRange = xMax - xMin || 1;
+            const xPos = (val) => pad.left + ((val - xMin) / xRange) * plotW;
+            const yPos = (count) => pad.top + plotH - (count / maxCount) * plotH;
+
+            // Store bin layout for click detection
+            const binLayout = [];
+            for (let i = 0; i < counts.length; i++) {
+                const x1 = xPos(edges[i]);
+                const x2 = xPos(edges[i + 1]);
+                binLayout.push({ x: x1, w: x2 - x1 });
+            }
+            if (which === 'src') this._srcActBinLayout = binLayout;
+            else this._tgtActBinLayout = binLayout;
+
+            // Draw zero line if range spans zero
+            if (xMin < 0 && xMax > 0) {
+                const zeroX = xPos(0);
+                ctx.strokeStyle = '#555';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath();
+                ctx.moveTo(zeroX, pad.top);
+                ctx.lineTo(zeroX, pad.top + plotH);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.fillStyle = '#888';
+                ctx.font = '10px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText('0', zeroX, pad.top + plotH + 14);
+            }
+
+            // Determine selected range for activation histograms
+            const actRangeStart = which === 'src' ? this.srcRangeStart : this.tgtRangeStart;
+            const actRangeEnd = which === 'src' ? this.srcRangeEnd : this.tgtRangeEnd;
+            const actRangeLo = actRangeEnd >= 0 ? Math.min(actRangeStart, actRangeEnd) : -1;
+            const actRangeHi = actRangeEnd >= 0 ? Math.max(actRangeStart, actRangeEnd) : -1;
+            const inActRange = (i) => actRangeLo >= 0 && i >= actRangeLo && i <= actRangeHi;
+
+            // Draw bars
+            for (let i = 0; i < counts.length; i++) {
+                if (counts[i] === 0) continue;
+                const x1 = xPos(edges[i]), x2 = xPos(edges[i + 1]);
+                const barH = (counts[i] / maxCount) * plotH;
+                const midVal = (edges[i] + edges[i + 1]) / 2;
+
+                let r, g, b;
+                if (i === selectedBin || inActRange(i)) {
+                    r = 233; g = 69; b = 96;  // bright red for selected/range
+                } else if (i === hoveredBin) {
+                    r = 200; g = 160; b = 60;  // yellow for hovered
+                } else if (midVal < 0) {
+                    // Blue for negative
+                    const t = Math.min(1, Math.abs(midVal) / (Math.abs(xMin) || 1));
+                    r = Math.round(70 + (1 - t) * 30);
+                    g = Math.round(100 + (1 - t) * 50);
+                    b = Math.round(180 + t * 57);
+                } else {
+                    // Green for positive
+                    const t = Math.min(1, midVal / (xMax || 1));
+                    r = Math.round(70 + (1 - t) * 30);
+                    g = Math.round(160 + t * 40);
+                    b = Math.round(90 + (1 - t) * 30);
+                }
+                ctx.fillStyle = `rgb(${r},${g},${b})`;
+                ctx.fillRect(x1, pad.top + plotH - barH, Math.max(x2 - x1 - 0.5, 1), barH);
+
+                // Has examples indicator
+                if (hist.bins && hist.bins[i] && hist.bins[i].examples && hist.bins[i].examples.length > 0) {
+                    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                    ctx.fillRect(x1, pad.top + plotH - barH, Math.max(x2 - x1 - 0.5, 1), 2);
+                }
+            }
+
+            // Selected bin/range highlight
+            if (actRangeLo >= 0) {
+                const x1 = xPos(edges[actRangeLo]);
+                const x2 = xPos(edges[actRangeHi + 1]);
+                ctx.strokeStyle = '#e94560';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x1, pad.top, x2 - x1, plotH);
+            } else if (selectedBin >= 0 && selectedBin < counts.length) {
+                const x1 = xPos(edges[selectedBin]);
+                const x2 = xPos(edges[selectedBin + 1]);
+                ctx.strokeStyle = '#e94560';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x1, pad.top, x2 - x1, plotH);
+            }
+
+            // Percentile markers
+            const pcts = hist.percentiles || {};
+            const pctColors = { '5': '#3498db', '25': '#27ae60', '50': '#e67e22', '75': '#27ae60', '95': '#3498db' };
+            for (const [pLabel, pVal] of Object.entries(pcts)) {
+                if (pLabel === '1' || pLabel === '99') continue;  // skip extremes to reduce clutter
+                if (pVal >= xMin && pVal <= xMax) {
+                    const px = xPos(pVal);
+                    ctx.strokeStyle = pctColors[pLabel] || '#888';
+                    ctx.lineWidth = 1;
+                    ctx.setLineDash([3, 3]);
+                    ctx.beginPath();
+                    ctx.moveTo(px, pad.top);
+                    ctx.lineTo(px, pad.top + plotH);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    ctx.fillStyle = pctColors[pLabel] || '#888';
+                    ctx.font = '9px monospace';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('p' + pLabel, px, pad.top - 3);
+                }
+            }
+
+            // Axes
+            ctx.strokeStyle = '#555'; ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(pad.left, pad.top);
+            ctx.lineTo(pad.left, pad.top + plotH);
+            ctx.lineTo(pad.left + plotW, pad.top + plotH);
+            ctx.stroke();
+
+            // X-axis labels (linear scale)
+            ctx.fillStyle = '#aaa'; ctx.font = '11px monospace'; ctx.textAlign = 'center';
+            const nTicks = 6;
+            for (let i = 0; i <= nTicks; i++) {
+                const val = xMin + (i / nTicks) * xRange;
+                const x = xPos(val);
+                let label;
+                if (Math.abs(val) < 0.001 && val !== 0) label = val.toExponential(1);
+                else if (Math.abs(val) < 1) label = val.toFixed(3);
+                else label = val.toFixed(1);
+                ctx.fillText(label, x, pad.top + plotH + 18);
+            }
+            ctx.fillStyle = '#888'; ctx.font = '12px monospace';
+            ctx.fillText('activation value', pad.left + plotW / 2, H - 5);
+
+            // Y-axis labels
+            ctx.textAlign = 'right'; ctx.fillStyle = '#aaa'; ctx.font = '11px monospace';
+            for (let i = 0; i <= 4; i++) {
+                const count = Math.round((i / 4) * maxCount);
+                const y = yPos(count);
+                const label = count >= 1000 ? (count / 1000).toFixed(1) + 'k' : String(count);
+                ctx.fillText(label, pad.left - 6, y + 4);
+                if (i > 0 && i < 4) {
+                    ctx.strokeStyle = '#333'; ctx.lineWidth = 1;
+                    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + plotW, y); ctx.stroke();
+                }
+            }
+            ctx.save();
+            ctx.translate(12, pad.top + plotH / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillStyle = '#888'; ctx.font = '12px monospace'; ctx.textAlign = 'center';
+            ctx.fillText('count', 0, 0);
+            ctx.restore();
+
+            // Hint
+            ctx.fillStyle = '#666'; ctx.font = '10px monospace'; ctx.textAlign = 'right';
+            ctx.fillText('click a bin to see examples', W - pad.right, pad.top + 14);
+        },
+
+        renderDpHistogram() {
+            const canvas = this.$refs.dpHistCanvas;
+            if (!canvas || !this.dpData || !this.dpData.kl_histogram) return;
+            const hist = this.dpData.kl_histogram;
+            const bins = hist.bins;
+            const counts = hist.counts;
+            if (!counts || counts.length === 0) return;
+
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            const W = rect.width, H = rect.height;
+            const pad = { top: 20, right: this.showCdf ? 60 : 30, bottom: 45, left: 65 };
+            const plotW = W - pad.left - pad.right;
+            const plotH = H - pad.top - pad.bottom;
+
+            ctx.fillStyle = '#1a1b26';
+            ctx.fillRect(0, 0, W, H);
+
+            const edges = hist.bin_edges_log10;
+            const maxCount = Math.max(...counts);
+            if (maxCount === 0) return;
+
+            const xMin = edges[0], xMax = edges[edges.length - 1];
+            const xRange = xMax - xMin || 1;
+            const xPos = (logVal) => pad.left + ((logVal - xMin) / xRange) * plotW;
+            const yPos = (count) => pad.top + plotH - (count / maxCount) * plotH;
+
+            // Store bin layout for click detection
+            this._binLayout = [];
+            for (let i = 0; i < counts.length; i++) {
+                const x1 = xPos(edges[i]);
+                const x2 = xPos(edges[i + 1]);
+                this._binLayout.push({ x: x1, w: x2 - x1 });
+            }
+
+            // Determine selected range
+            const rangeLo = this.klRangeEnd >= 0 ? Math.min(this.klRangeStart, this.klRangeEnd) : -1;
+            const rangeHi = this.klRangeEnd >= 0 ? Math.max(this.klRangeStart, this.klRangeEnd) : -1;
+            const inRange = (i) => rangeLo >= 0 && i >= rangeLo && i <= rangeHi;
+
+            // Draw bars
+            for (let i = 0; i < counts.length; i++) {
+                if (counts[i] === 0) continue;
+                const x1 = xPos(edges[i]), x2 = xPos(edges[i + 1]);
+                const barH = (counts[i] / maxCount) * plotH;
+                const t = i / counts.length;
+
+                // Color: blue-to-red gradient
+                let r, g, b;
+                if (i === this.selectedBin || inRange(i)) {
+                    r = 233; g = 69; b = 96;  // bright red for selected/range
+                } else if (i === this.hoveredBin) {
+                    r = 200; g = 160; b = 60;  // yellow for hovered
+                } else {
+                    r = Math.round(54 + t * 180);
+                    g = Math.round(152 - t * 80);
+                    b = Math.round(219 - t * 180);
+                }
+                ctx.fillStyle = `rgb(${r},${g},${b})`;
+                ctx.fillRect(x1, pad.top + plotH - barH, Math.max(x2 - x1 - 0.5, 1), barH);
+
+                // Has examples indicator
+                if (bins && bins[i] && bins[i].examples && bins[i].examples.length > 0) {
+                    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                    ctx.fillRect(x1, pad.top + plotH - barH, Math.max(x2 - x1 - 0.5, 1), 2);
+                }
+            }
+
+            // Selected bin/range highlight
+            if (rangeLo >= 0) {
+                const x1 = xPos(edges[rangeLo]);
+                const x2 = xPos(edges[rangeHi + 1]);
+                ctx.strokeStyle = '#e94560';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x1, pad.top, x2 - x1, plotH);
+            } else if (this.selectedBin >= 0 && this.selectedBin < counts.length) {
+                const x1 = xPos(edges[this.selectedBin]);
+                const x2 = xPos(edges[this.selectedBin + 1]);
+                ctx.strokeStyle = '#e94560';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x1, pad.top, x2 - x1, plotH);
+            }
+
+            // Near-zero label
+            if (hist.n_near_zero > 0) {
+                ctx.fillStyle = '#888'; ctx.font = '11px monospace'; ctx.textAlign = 'left';
+                ctx.fillText((hist.n_near_zero / hist.n_total * 100).toFixed(1) + '% near-zero', pad.left + 5, pad.top + 14);
+            }
+
+            // Axes
+            ctx.strokeStyle = '#555'; ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(pad.left, pad.top);
+            ctx.lineTo(pad.left, pad.top + plotH);
+            ctx.lineTo(pad.left + plotW, pad.top + plotH);
+            ctx.stroke();
+
+            // X-axis labels
+            ctx.fillStyle = '#aaa'; ctx.font = '11px monospace'; ctx.textAlign = 'center';
+            const xStep = Math.max(1, Math.ceil(xRange / 8));
+            for (let v = Math.ceil(xMin); v <= Math.floor(xMax); v += xStep) {
+                const x = xPos(v);
+                ctx.fillText('1e' + v, x, pad.top + plotH + 18);
+                ctx.strokeStyle = '#333'; ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(x, pad.top); ctx.lineTo(x, pad.top + plotH); ctx.stroke();
+            }
+            ctx.fillStyle = '#888'; ctx.font = '12px monospace';
+            ctx.fillText('KL divergence (log\u2081\u2080)', pad.left + plotW / 2, H - 5);
+
+            // Y-axis labels
+            ctx.textAlign = 'right'; ctx.fillStyle = '#aaa'; ctx.font = '11px monospace';
+            for (let i = 0; i <= 4; i++) {
+                const count = Math.round((i / 4) * maxCount);
+                const y = yPos(count);
+                const label = count >= 1000 ? (count / 1000).toFixed(1) + 'k' : String(count);
+                ctx.fillText(label, pad.left - 6, y + 4);
+                if (i > 0 && i < 4) {
+                    ctx.strokeStyle = '#333'; ctx.lineWidth = 1;
+                    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + plotW, y); ctx.stroke();
+                }
+            }
+            ctx.save();
+            ctx.translate(12, pad.top + plotH / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillStyle = '#888'; ctx.font = '12px monospace'; ctx.textAlign = 'center';
+            ctx.fillText('count', 0, 0);
+            ctx.restore();
+
+            // CDF overlay: cumulative KL mass from left to right
+            if (this.showCdf && bins) {
+                // Get per-bin KL (precomputed or estimate)
+                const klPerBin = bins.map(b => {
+                    if (b.total_kl !== undefined) return b.total_kl;
+                    if (b.count === 0) return 0;
+                    const mid = (b.log10_lo + b.log10_hi) / 2;
+                    return b.count * Math.pow(10, mid);
+                });
+                const totalKL = klPerBin.reduce((a, b) => a + b, 0);
+                if (totalKL > 0) {
+                    // Draw CDF line (left to right cumulation)
+                    ctx.strokeStyle = '#f0c040';
+                    ctx.lineWidth = 2.5;
+                    ctx.beginPath();
+                    let cum = 0;
+                    for (let i = 0; i < counts.length; i++) {
+                        cum += klPerBin[i];
+                        const frac = cum / totalKL;
+                        const x = xPos(edges[i + 1]);
+                        const y = pad.top + plotH - frac * plotH;
+                        if (i === 0) ctx.moveTo(xPos(edges[0]), pad.top + plotH);
+                        ctx.lineTo(x, y);
+                    }
+                    ctx.stroke();
+
+                    // Right-side Y-axis labels for CDF (0% to 100%)
+                    ctx.fillStyle = '#f0c040'; ctx.font = '11px monospace'; ctx.textAlign = 'left';
+                    for (const pct of [0, 25, 50, 75, 100]) {
+                        const y = pad.top + plotH - (pct / 100) * plotH;
+                        ctx.fillText(pct + '%', pad.left + plotW + 4, y + 4);
+                        if (pct > 0 && pct < 100) {
+                            ctx.strokeStyle = 'rgba(240, 192, 64, 0.2)'; ctx.lineWidth = 1;
+                            ctx.setLineDash([3, 4]);
+                            ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + plotW, y); ctx.stroke();
+                            ctx.setLineDash([]);
+                        }
+                    }
+                    // CDF label on right axis
+                    ctx.save();
+                    ctx.translate(W - 2, pad.top + plotH / 2);
+                    ctx.rotate(-Math.PI / 2);
+                    ctx.fillStyle = '#f0c040'; ctx.font = '11px monospace'; ctx.textAlign = 'center';
+                    ctx.fillText('cumulative KL %', 0, 0);
+                    ctx.restore();
+                }
+            }
+
+            // "click to explore" hint
+            ctx.fillStyle = '#666'; ctx.font = '10px monospace'; ctx.textAlign = 'right';
+            ctx.fillText('click a bin to see examples', W - pad.right, pad.top + 14);
+        },
+
+        renderDpTokens(el) {
+            if (!el.dataset.dpTokens) return;
+            const tokens = JSON.parse(el.dataset.dpTokens);
+            const values = JSON.parse(el.dataset.dpValues || '[]');
+            const pos = parseInt(el.dataset.dpPos);
+            const mode = el.dataset.dpMode;  // 'kl' or 'act'
+            el.innerHTML = '';
+
+            let maxAbs = 0;
+            for (let i = 0; i < values.length; i++) {
+                const v = Math.abs(values[i] || 0);
+                if (v > maxAbs) maxAbs = v;
+            }
+
+            tokens.forEach((tok, i) => {
+                const span = document.createElement('span');
+                span.className = 'tok';
+                span.textContent = tok;
+                const v = (i < values.length) ? values[i] : 0;
+
+                if (mode === 'kl') {
+                    // KL mode: transparent -> yellow -> orange -> red (log scale)
+                    if (maxAbs > 0 && v > 0) {
+                        const logMax = Math.log10(maxAbs + 1e-20);
+                        const logV = Math.log10(v + 1e-20);
+                        const intensity = Math.max(0, Math.min(1, (logV - logMax + 4) / 4));
+                        if (intensity > 0.02) {
+                            const r = Math.round(255);
+                            const g = Math.round(255 - intensity * 180);
+                            const b = Math.round(50 - intensity * 50);
+                            span.style.backgroundColor = `rgba(${r},${g},${b},${0.15 + intensity * 0.7})`;
+                            if (intensity > 0.5) span.style.color = '#1a1b26';
+                        }
+                    }
+                } else {
+                    // Activation mode: blue (neg) -> transparent -> green (pos)
+                    if (maxAbs > 0) {
+                        const norm = v / maxAbs;
+                        const absNorm = Math.abs(norm);
+                        if (absNorm > 0.05) {
+                            if (norm > 0) {
+                                span.style.backgroundColor = `rgba(76, 191, 102, ${absNorm * 0.75})`;
+                            } else {
+                                span.style.backgroundColor = `rgba(100, 149, 237, ${absNorm * 0.75})`;
+                            }
+                            if (absNorm > 0.5) span.style.color = '#1a1b26';
+                        }
+                    }
+                }
+
+                if (i === pos) {
+                    span.className += ' tok-target';
+                }
+
+                span.title = `pos ${i}: ${mode === 'kl' ? 'KL' : 'act'}=${v.toExponential ? v.toExponential(2) : v}`;
+                el.appendChild(span);
+            });
+        },
+
+
+        binCategoryDist(examples) {
+            if (!examples || examples.length === 0) return [];
+            const counts = {};
+            for (const ex of examples) {
+                const cat = ex.category || 'unknown';
+                counts[cat] = (counts[cat] || 0) + 1;
+            }
+            const total = examples.length;
+            return Object.entries(counts)
+                .map(([cat, cnt]) => [cat, { count: cnt, pct: Math.round(cnt / total * 100) }])
+                .sort((a, b) => b[1].count - a[1].count);
+        },
+
+        sortedCatDist(dist) {
+            if (!dist) return [];
+            return Object.entries(dist).sort((a, b) => b[1].frac - a[1].frac);
+        },
+
+        catColor(name) {
+            return DP_CAT_COLORS[name] || '#abb2bf';
+        },
+    };
+}
+
+</script>
+
+</body>
+</html>
